@@ -15,6 +15,8 @@ pip install animec
 
 To import the library:
 ```python
+import animec
+# OR
 from animec import *
 ```
 
