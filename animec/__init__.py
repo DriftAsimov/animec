@@ -8,10 +8,10 @@ from urllib.request import urlopen
 This is an unofficial module to extract an anime character data from ://myanimelist.net/
 '''
 
-__author__ = "Drift Asimov"
+__author__ = "DriftAsimov"
 __title__ = "animec"
 __copyright__ = "Copyright Drift Asimov 2021"
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 __license__ = "MIT"
 
 #IMPLEMENTATION
