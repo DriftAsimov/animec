@@ -10,12 +10,12 @@ classifiers = [
  
 setup(
   name='animec',
-  version='0.0.1',
+  version='0.0.2',
   description='An unofficial module to extract character data from myanimelist',
-  long_description=open('README.md').read() + '\n\n' + open('CHANGELOG.txt').read(),
+  long_description=open('README.md').read(),
   long_description_content_type = 'text/markdown',
   url='https://github.com/DriftAsimov/animec',  
-  author='Drift Asimov',
+  author='DriftAsimov',
   author_email='driftasimov@gmail.com',
   license='MIT', 
   classifiers=classifiers,
