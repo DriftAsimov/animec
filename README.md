@@ -18,7 +18,7 @@ To import the library:
 from animec import *
 ```
 
-## Exaple 
+## Example 
 
 ### Getting info about an anime character
 
@@ -42,10 +42,8 @@ print(image_url)
 
 > Note: I do not own myanimelist or any imported module or api. I have just used them to extract the data.
 
-```python
-'''
+```
 Author: Drift Asimov
 GitHub: https://github.com/DriftAsimov
 Language Used: Python
-'''
 ```
