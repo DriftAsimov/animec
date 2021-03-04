@@ -25,7 +25,8 @@ from animec import *
 ```python
 from animec import *
 
-url = charinfo("senku ishigami")
+our_object = Animec()
+url = our_object.charinfo("senku ishigami")
 print(url)
 
 ```
@@ -35,14 +36,15 @@ print(url)
 ```python
 from animec import *
 
-image_url = animechar("okabe rintarou")
+our_object = Animec()
+image_url = our_object.animechar("okabe rintarou")
 print(image_url)
 
 ```
 
 
 ```
-Author: Drift Asimov
+Author: DriftAsimov
 GitHub: https://github.com/DriftAsimov
 Language Used: Python
 ```
