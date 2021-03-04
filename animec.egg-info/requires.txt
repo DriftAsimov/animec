@@ -1,3 +1,0 @@
-googlesearch
-bs4
-urllib
