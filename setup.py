@@ -14,12 +14,12 @@ setup(
   description='An unofficial module to extract character data from myanimelist',
   long_description=open('README.md').read() + '\n\n' + open('CHANGELOG.txt').read(),
   long_description_content_type = 'text/markdown',
-  url='',  
+  url='https://github.com/DriftAsimov/animec',  
   author='Drift Asimov',
   author_email='driftasimov@gmail.com',
   license='MIT', 
   classifiers=classifiers,
   keywords='animecharacter', 
   packages=find_packages(),
-  install_requires=['googlesearch','bs4','urllib'] 
+  install_requires=['google-search==1.0.2','bs4==0.0.1','urllib3==1.25.9'] 
 )
