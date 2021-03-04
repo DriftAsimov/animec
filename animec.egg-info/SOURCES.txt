@@ -1,0 +1,11 @@
+CHANGELOG.txt
+LICENSE.txt
+MANIFEST.in
+README.md
+setup.py
+animec/__init__.py
+animec.egg-info/PKG-INFO
+animec.egg-info/SOURCES.txt
+animec.egg-info/dependency_links.txt
+animec.egg-info/requires.txt
+animec.egg-info/top_level.txt
