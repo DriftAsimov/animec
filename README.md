@@ -50,6 +50,7 @@ Character.search()["image"]
 Character.search()["url]
 ```
 
+## Credits
 
 ```
 Author: DriftAsimov
