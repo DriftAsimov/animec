@@ -32,7 +32,7 @@ result = charsearch("okabe rintarou")
 print(result.title, result.url, result.image_url, sep="\n")
 
 '''
-Output:
+Output: (As retrived from myanimelist)
 Rintarou Okabe (岡部 倫太郎)
 https://myanimelist.net/character/35252/Rintarou_Okabe
 https://cdn.myanimelist.net/images/characters/6/122643.jpg
@@ -45,9 +45,9 @@ List of properties and methods currently supported by animec.
 
 ```
 charsearch()
-├── .title
-├── .url
-├── .image_url
+    .title
+    .url
+    .image_url
 ```
 
 ## Credits
