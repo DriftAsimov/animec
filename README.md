@@ -27,14 +27,16 @@ from animec import *
 ```python
 from animec import *
 
-our_object = Character("okabe rintarou")
-result = our_object.search()
+result = charsearch("okabe rintarou")
 
-title = result["title"]
-image_url = result["image"]
-link = result["url"]
+print(result.title, result.url, result.image_url, sep="\n")
 
-print(f"Title: {title} \nImage Url: {image_url} \nLink: {link}")
+'''
+Output:
+Rintarou Okabe (岡部 倫太郎)
+https://myanimelist.net/character/35252/Rintarou_Okabe
+https://cdn.myanimelist.net/images/characters/6/122643.jpg
+'''
 ```
 
 ## API Documentation
@@ -42,12 +44,10 @@ print(f"Title: {title} \nImage Url: {image_url} \nLink: {link}")
 List of properties and methods currently supported by animec.
 
 ```
-Character(search_query)
-Character.search()
-
-Character.search()["title"]
-Character.search()["image"]
-Character.search()["url]
+charsearch()
+├── .title
+├── .url
+├── .image_url
 ```
 
 ## Credits
