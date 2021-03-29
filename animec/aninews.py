@@ -15,7 +15,7 @@ class aninews:
         news_container = soup.findAll('div', {'class' : 'news-unit clearfix rect'})
         stripped_list = news_container[:amount]
 
-        news = {}
+        titles, links, description = [], [], []
 
         for i in stripped_list:
             
@@ -24,8 +24,15 @@ class aninews:
             link = a['href']
             text = a.get_text()
 
-            news[text] = link
+            desc = i.findChildren("div", {'class' : 'text'})[0]
 
-        self.news = news
-        self.titles = list(news.keys())
-        self.links = list(news.values())
+            titles.append(text)
+            links.append(link)
+            description.append(" ".join(desc.text.split()))
+
+        news = zip(titles, links, description)
+
+        self.news = list(news)
+        self.titles = titles
+        self.links = links
+        self.description = description
