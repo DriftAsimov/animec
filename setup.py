@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
  
 classifiers = [
-  'Development Status :: 4 - Beta',
+  'Development Status :: 5 - Production/Stable',
   'Intended Audience :: Developers',
   'Operating System :: OS Independent',
   'License :: OSI Approved :: MIT License',
@@ -12,7 +12,7 @@ classifiers = [
  
 setup(
   name='animec',
-  version='0.0.6',
+  version='0.0.86',
   description='An unofficial API to get data about anime characters, anime news and more.',
   long_description=open('README.md', encoding='utf-8').read(),
   long_description_content_type = 'text/markdown',
@@ -23,5 +23,5 @@ setup(
   classifiers=classifiers,
   keywords=['animecharacter anime api character myanimelist news animenews'], 
   packages=find_packages(),
-  install_requires=['google-search==1.0.2','bs4==0.0.1','urllib3==1.25.9','google==3.0.0'] 
+  install_requires=['google-search','bs4','urllib3'] 
 )
