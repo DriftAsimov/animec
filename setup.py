@@ -12,7 +12,7 @@ classifiers = [
  
 setup(
   name='animec',
-  version='0.0.86',
+  version='0.0.88',
   description='An unofficial API to get data about anime characters, anime news and more.',
   long_description=open('README.md', encoding='utf-8').read(),
   long_description_content_type = 'text/markdown',
