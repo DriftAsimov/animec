@@ -1,4 +1,4 @@
-from googlesearch import search
+import animec.gs
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 import re
@@ -7,34 +7,38 @@ class charsearch:
     
     def __init__(self, query):
 
-        for j in search(f"{query} anime character", tld="com", num=50, stop=50, pause=3):
-            if ('myanimelist') in j:
-                url = j
+        url = find_character(query)
+
+        if url is None:
+            raise NoCharacterFound
+            return
+
+        html_page = urlopen(url)
+        soup = BeautifulSoup(html_page, 'html.parser')
+
+        images = soup.findAll('img')
+
+        string_list = [str(i) for i in images]
+
+        for k in string_list:
+            if 'characters' in k:
+                char = k
                 break
 
-        try:
-            
-            html_page = urlopen(url)
-            soup = BeautifulSoup(html_page, 'html.parser')
+        image_url = re.search("https://.*jpg", char).group()
 
-            images = soup.findAll('img')
+        title = soup.find('h2')
+        title = title.get_text()
 
-            string_list = [str(i) for i in images]
+        self.title = title
+        self.url = url
+        self.image_url = image_url
 
-            for k in string_list:
-                if 'characters' in k:
-                    char = k
-                    break
+class NoCharacterFound(Exception):
+    pass
 
-            image_url = re.search("https://.*jpg", char).group()
+def find_character(query):
 
-            title = soup.find('h2')
-            title = title.get_text()
-
-            self.title = title
-            self.url = url
-            self.image_url = image_url
-        
-        except:
-            print("No such anime character found.")
-            return
+    for url in animec.gs.search(f"{query} anime character info", num_results = 50):
+        if ('myanimelist' in str(url)) and ('character' in str(url)):
+            return url
