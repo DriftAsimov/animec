@@ -1,6 +1,6 @@
-<img src = "https://discord.com/api/guilds/759396489373155338/embed.png">
-
 # Anime Character API
+
+<img src = "https://discord.com/api/guilds/759396489373155338/embed.png">
 
 An unofficial API to get data about anime characters, anime news and more.
 The API scrapes [myanimelist](https://myanimelist.net/) to get data about anime characters and anime news.
