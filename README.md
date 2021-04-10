@@ -1,3 +1,5 @@
+<img src = "https://discord.com/api/guilds/759396489373155338/embed.png">
+
 # Anime Character API
 
 An unofficial API to get data about anime characters, anime news and more.
