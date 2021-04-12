@@ -102,4 +102,4 @@ Mail: driftasimov@gmail.com
 Discord: Drift Asimov#3338 | https://discord.gg/x3qAZV3
 ```
 
-> Note: I do not own myanimelist or any imported module or api. I have just used them to extract the data.
+> Note: I do not own myanimelist. I have just used them to extract the data.
