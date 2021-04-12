@@ -1,6 +1,6 @@
 <p align = "center"><img width="248" height="248" src="https://i.imgur.com/IyUybvv.png"></p>
 
-# Anime Character API
+# Anime Character API: Animec
 
 <a href = "https://discord.gg/x3qAZV3" target = "_blank"><img src = "https://discord.com/api/guilds/759396489373155338/embed.png"></a>
 
