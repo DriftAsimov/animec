@@ -1,8 +1,7 @@
 <p align = "center"><img width="248" height="248" src="https://i.imgur.com/IyUybvv.png"></p>
+<p align = "center"><a href = "https://discord.gg/x3qAZV3" target = "_blank"><img src = "https://discord.com/api/guilds/759396489373155338/embed.png"></a></p>
 
 # Animec
-
-<a href = "https://discord.gg/x3qAZV3" target = "_blank"><img src = "https://discord.com/api/guilds/759396489373155338/embed.png"></a>
 
 An unofficial API to get data about anime characters, anime news and more.
 The API scrapes [myanimelist](https://myanimelist.net/) to get data about anime characters and anime news.
