@@ -3,10 +3,8 @@
 
 # Animec
 
-An unofficial API to get data about anime characters, anime news and more.
-The API scrapes [myanimelist](https://myanimelist.net/) to get data about anime characters and anime news.
-
-Currently, the API is very basic, but I will be adding a lot of stuff to easily extract data.
+An unofficial API to get data about anime characters, anime news, anime info and more.
+The API scrapes [myanimelist](https://myanimelist.net/) to parse requested data.
 
 If you wish to see a feature, please raise an [issue](https://github.com/DriftAsimov/animec). We will surely work on it.
 You can also join our [Discord](https://discord.gg/x3qAZV3) to get regular updates about the API.
@@ -47,7 +45,6 @@ https://cdn.myanimelist.net/images/characters/6/122643.jpg
 ```python
 news = aninews(3)   #default value is 2
 
-print(news.news)    #returns a dictionary with news titles as keys and values as links
 print(news.titles)  #returns news titles
 print(news.links)   #returns news links
 print(news.descripion)   #returns news description
@@ -59,9 +56,11 @@ print(news.images)  #returns news images
 
 ```python
 anime = anime("dr stone")
-recommendations = anime.recommend(7)
+recommendations = anime.recommend()
 
 print(anime.url)
+print(anime.name)
+print(anime.description)    #check the documendation for a list of all supported attributes
 print(recommendations)  #returns a list of anime recommendations
 ```
 
@@ -77,7 +76,6 @@ charsearch()
 ----- .image_url
 
 aninews()
------ .news
 ----- .titles
 ----- .links
 ----- .description
@@ -85,6 +83,22 @@ aninews()
 
 anime()
 ----- .url
+----- .name
+----- .description
+----- .poster
+----- .title_english
+----- .title_jp
+----- .alt_titles
+----- .opening_themes
+----- .ending_themes
+----- .episodes
+----- .aired
+----- .broadcast
+----- .rating
+----- .ranked
+----- .popularity
+----- .favorites
+
 ----- .recommend()
 ```
 
@@ -102,4 +116,4 @@ Mail: driftasimov@gmail.com
 Discord: Drift Asimov#3338 | https://discord.gg/x3qAZV3
 ```
 
-> Note: I do not own myanimelist. I have just used them to extract the data.
+> Note: I do not own myanimelist. I have just used it to extract the data.
