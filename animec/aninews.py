@@ -1,13 +1,15 @@
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 
+class TooManyRequests(Exception):
+    pass
+
 class aninews:
 
     def __init__(self, amount: int = 3):
 
         if amount >= 15:
-            print("Keep requests below 15 to avoid stressing the API.")
-            return
+            raise TooManyRequests("Keep requests below 15 to avoid stressing the API.")
 
         html_page = urlopen('https://myanimelist.net/news/tag/new_anime')
         soup = BeautifulSoup(html_page, 'html.parser')
@@ -37,7 +39,7 @@ class aninews:
 
         news = zip(titles, links, description, images)
 
-        self.news = list(news)
+        self.__init__ = list(news)
         
         self.titles = titles
         self.links = links
