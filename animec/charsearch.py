@@ -3,15 +3,17 @@ from bs4 import BeautifulSoup
 from urllib.request import urlopen
 import re
 
+class NoCharacterFound(Exception):
+    pass
+
 class charsearch:
     
     def __init__(self, query):
 
-        url = find_character(query)
+        url = _find_character(query)
 
         if url is None:
-            raise NoCharacterFound
-            return
+            raise NoCharacterFound("No such anime character found.")
 
         html_page = urlopen(url)
         soup = BeautifulSoup(html_page, 'html.parser')
@@ -34,11 +36,8 @@ class charsearch:
         self.url = url
         self.image_url = image_url
 
-class NoCharacterFound(Exception):
-    pass
-
-def find_character(query):
-
+def _find_character(query):
+    
     for url in animec.gs.search(f"{query} anime character info", num_results = 50):
         if ('myanimelist' in str(url)) and ('character' in str(url)):
             return url
