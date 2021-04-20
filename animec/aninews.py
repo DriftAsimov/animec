@@ -8,18 +8,17 @@ class aninews:
 
     def __init__(self, amount: int = 3):
 
-        if amount >= 15:
-            raise TooManyRequests("Keep requests below 15 to avoid stressing the API.")
+        if amount >= 9:
+            raise TooManyRequests("Keep requests below 9 to avoid stressing the module.")
 
         html_page = urlopen('https://myanimelist.net/news/tag/new_anime')
         soup = BeautifulSoup(html_page, 'html.parser')
 
-        news_container = soup.findAll('div', {'class' : 'news-unit clearfix rect'})
-        stripped_list = news_container[:amount]
+        news_container = soup.findAll('div', {'class' : 'news-unit clearfix rect'}, limit = amount)
 
         titles, links, description, images = [], [], [], []
 
-        for i in stripped_list:
+        for i in news_container:
             
             text = i.findChildren("p")[0]
             a = text.find('a', href = True)
