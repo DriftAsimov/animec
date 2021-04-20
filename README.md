@@ -3,20 +3,20 @@
 
 # Animec
 
-An unofficial API to get data about anime characters, anime news, anime info and more.
+A module to get data about anime characters, news, info, lyrics and more.
 The API scrapes [myanimelist](https://myanimelist.net/) to parse requested data.
 
 If you wish to see a feature, please raise an [issue](https://github.com/DriftAsimov/animec). We will surely work on it.
-You can also join our [Discord](https://discord.gg/x3qAZV3) to get regular updates about the API.
+You can also join our [Discord](https://discord.gg/x3qAZV3) to get regular updates about the module.
 
 ## Installation and Usage
 
-To install the library:
+To install the module:
 ```python
 pip install animec
 ```
 
-To import the library:
+To import the module:
 ```python
 import animec
 # OR
@@ -52,7 +52,7 @@ print(news.images)  #returns news images
 
 ```
 
-### Getting anime urls and recommendations
+### Getting anime info and recommendations
 
 ```python
 anime = anime("dr stone")
@@ -62,6 +62,13 @@ print(anime.url)
 print(anime.name)
 print(anime.description)    #check the documendation for a list of all supported attributes
 print(recommendations)  #returns a list of anime recommendations
+```
+
+### Anime Lyrics
+
+```python
+lyrics = anilyrics("Ashiato")
+print(lyrics.romaji)
 ```
 
 ## API Documentation
@@ -100,6 +107,11 @@ anime()
 ----- .favorites
 
 ----- .recommend()
+
+anilyrics()
+----- .romaji
+----- .english
+----- .kanji
 ```
 
 ## Credits
@@ -108,6 +120,9 @@ anime()
 Author: DriftAsimov
 GitHub: https://github.com/DriftAsimov
 Language Used: Python
+Sites: 
+https://myanimelist.net/
+https://www.animesonglyrics.com/
 ```
 
 ## Contact Us
@@ -115,5 +130,3 @@ Language Used: Python
 Mail: driftasimov@gmail.com
 Discord: Drift Asimov#3338 | https://discord.gg/x3qAZV3
 ```
-
-> Note: I do not own myanimelist. I have just used it to extract the data.
