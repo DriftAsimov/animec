@@ -35,21 +35,21 @@ class anime:
         spaced_divs = anime_page.findAll('div', {'class' : 'spaceit'})
         dark_text = anime_page.findAll('span', {'class':'dark_text'})
         
-        title_english = self._div_ch(div = spaceit_divs, txt = "English:")
-        title_jp = self._div_ch(div = spaceit_divs, txt = "Japanese:")
-        alt_titles = self._div_ch(div = spaceit_divs, txt = "Synonyms:")
+        title_english = self._divCh_(div = spaceit_divs, txt = "English:")
+        title_jp = self._divCh_(div = spaceit_divs, txt = "Japanese:")
+        alt_titles = self._divCh_(div = spaceit_divs, txt = "Synonyms:")
 
-        episodes = self._div_ch(div = spaced_divs, txt = "Episodes:")
-        aired = self._div_ch(div = spaced_divs, txt = "Aired:")
-        broadcast = self._div_ch(div = spaced_divs, txt = "Broadcast:")
-        rating = self._parent(element = dark_text, txt = "Rating:")
-        popularity = self._parent(element = dark_text, txt = "Popularity:")
-        favorites = self._parent(element = dark_text, txt = "Favorites:")
+        episodes = self._divCh_(div = spaced_divs, txt = "Episodes:")
+        aired = self._divCh_(div = spaced_divs, txt = "Aired:")
+        broadcast = self._divCh_(div = spaced_divs, txt = "Broadcast:")
+        rating = self._parent_(element = dark_text, txt = "Rating:")
+        popularity = self._parent_(element = dark_text, txt = "Popularity:")
+        favorites = self._parent_(element = dark_text, txt = "Favorites:")
 
         ranked_text = str(anime_page.find('div', {'class':'spaceit po-r js-statistics-info di-ib'}))
         ranked = re.search("#.*<", ranked_text).group().split("<")[0]
 
-        description = anime_page.find('p', {'itemprop' : 'description'})
+        description = anime_page.find('p', {'itemprop' : 'description'}).text
         poster = anime_page.find('img', {'itemprop' : 'image'})
 
         opening_themes = [theme.text for theme in anime_page.find('div', {'class':'theme-songs js-theme-songs opnening'}).findChildren('span', {'class':'theme-song'})]
@@ -75,14 +75,14 @@ class anime:
         self.opening_themes = opening_themes
         self.ending_themes = ending_themes
 
-    def _div_ch(self, div: list, txt: str):
+    def _divCh_(self, div: list, txt: str):
 
         for container in div:
             if txt in container.text:
                 div_text = container.text.split(txt)[1].split()
                 return " ".join(div_text)
 
-    def _parent(self, element: list, txt: str):
+    def _parent_(self, element: list, txt: str):
 
         for e in element:
             if txt in e.text:
@@ -94,7 +94,7 @@ class anime:
         anime_page = urlopen(f"{self.url}/userrecs")
         soup = BeautifulSoup(anime_page, 'html.parser')
 
-        headers = soup.findAll("strong")
+        headers = soup.findAll("strong", limit = 15)
 
         recommendations = [i.get_text() for i in headers]
 
