@@ -1,14 +1,27 @@
-.. animec documentation master file, created by
-   sphinx-quickstart on Thu Apr 22 10:59:36 2021.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
-Welcome to animec's documentation!
+Welcome to animec's documentation
 ==================================
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
+
+Description
+-----------
+
+``animec`` is an open source python module to scrape information about anime characters, info, news, lyrics and more. It scrapes results from `MyAnimeList <https://myanimelist.net/>`__. The anilyrics class uses `animesonglyrics <https://www.animesonglyrics.com/>`__ to return the lyrics.
+
+Installation
+------------
+
+Using pip
+~~~~~~~~~
+
+In your shell run:
+
+.. code-block:: shell
+   
+   sudo pip install animec
+
 
 
 
