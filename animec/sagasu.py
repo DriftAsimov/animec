@@ -38,7 +38,7 @@ class charsearch:
 
 def _searchChar_(query):
     
-    for url in animec.gs.search(f"site:myanimelist {query} anime character info", num_results = 50):
+    for url in animec.gs.search(f"site:myanimelist.net {query} anime character info", num_results = 50):
         if ('myanimelist' in str(url)) and ('character' in str(url)):
             return url
 
