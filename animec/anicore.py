@@ -1,14 +1,58 @@
+# -*- coding: utf-8 -*-
+
 import re
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 from urllib.error import HTTPError
 
-class NotFound404(Exception):
-    pass
-
 class anime:
+    """Retrieves anime info via `animesonglyrics <https://www.animesonglyrics.com/>`__.
 
-    def __init__(self, query):
+    Parameters
+    ----------
+    query: [class:`str <https://docs.python.org/3/library/string.html>`__]
+        The query to be searched for.
+
+    Attributes
+    ----------
+    url
+        Returns the url of the anime main page
+    name 
+        Returns the main name of the anime
+    
+    title_english
+        Returns the english title
+    title_jp
+        Returns the japanese title
+    alt_titles
+        Returns alternative titles
+    
+    episodes
+        The episode count of the anime
+    aired
+        Anime's airing time
+    broadcast
+        The broadcast day of the series
+    rating
+        Rating given to the anime
+    ranked
+        Anime's ranking
+    popularity
+        The popularity of the anime
+    favorites
+        Count of people who tagged the anime as their favourite
+    
+    description
+        Short description about the anime
+    poster
+        Anime thumbnail
+    opening_themes
+        Opening themes of the series
+    ending_themes
+        Ending themes of the series
+    """
+
+    def __init__(self, query: str):
 
         if " " in query:
             query = query.replace(" ", "%20")
@@ -102,3 +146,7 @@ class anime:
         ri.pop(0)
 
         return ri[:4]
+
+class NotFound404(Exception):
+    """Occurs when No Result is Found"""
+    pass
