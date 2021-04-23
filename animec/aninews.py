@@ -5,6 +5,24 @@ class TooManyRequests(Exception):
     pass
 
 class aninews:
+    """Retrieves Anime News via `MyAnimeList <https://myanimelist.net/>`__.
+
+    Parameters
+    ----------
+    amount: `int <https://docs.python.org/3/library/functions.html#int>`__
+        The amount of news articles to be fetched. Defaults to ``3``
+
+    Attributes
+    ----------
+    titles: `list <https://docs.python.org/3/tutorial/datastructures.html>`__
+        The retrieved news titles.
+    links: `list <https://docs.python.org/3/tutorial/datastructures.html>`__
+        The retrieved news links.
+    description: `list <https://docs.python.org/3/tutorial/datastructures.html>`__
+        The retrieved news description.
+    images: `list <https://docs.python.org/3/tutorial/datastructures.html>`__
+        The retrieved news thumbnails.
+    """
 
     def __init__(self, amount: int = 3):
 
