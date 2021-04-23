@@ -60,7 +60,7 @@ recommendations = anime.recommend()
 
 print(anime.url)
 print(anime.name)
-print(anime.description)    #check the documendation for a list of all supported attributes
+print(anime.description)    #check the documentation for a list of all supported attributes
 print(recommendations)  #returns a list of anime recommendations
 ```
 
