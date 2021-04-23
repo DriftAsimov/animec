@@ -14,7 +14,7 @@
 import os
 import sys
 
-sys.path.insert(0, os.path.abspath('../..'))
+sys.path.insert(0, os.path.abspath('..'))
 
 # -- Project information -----------------------------------------------------
 
@@ -62,8 +62,13 @@ master_doc = 'index'
 #
 html_theme = 'sphinx_rtd_theme'
 
-html_favicon = 'docs/assets/animec.png'
-html_logo = 'docs/assets/animec.png'
+html_context = {
+    'discord_invite': 'https://discord.gg/x3qAZV3',
+    'issues': 'https://github.com/DriftAsimov/animec/issues',
+}
+
+html_favicon = '../assets/animec.png'
+html_logo = '../assets/animec.png'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
