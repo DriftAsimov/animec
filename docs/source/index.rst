@@ -45,8 +45,7 @@ Manually
    :maxdepth: 2
    :caption: Classes
 
-   ./charsearch
-   ./anilyrics
+   ./aniclass
 
 
 Indices and tables
