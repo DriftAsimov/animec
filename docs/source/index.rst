@@ -46,6 +46,7 @@ Manually
    :caption: Classes
 
    ./anicore
+   ./aninews
 
 
 Indices and tables
