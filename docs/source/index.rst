@@ -45,7 +45,7 @@ Manually
    :maxdepth: 2
    :caption: Classes
 
-   ./aniclass
+   ./anicore
 
 
 Indices and tables
