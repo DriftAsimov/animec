@@ -73,46 +73,7 @@ print(lyrics.romaji)
 
 ## API Documentation
 
-List of properties and methods currently supported by animec.
-Official documentation coming soon!
-
-```
-charsearch()
------ .title
------ .url
------ .image_url
-
-aninews()
------ .titles
------ .links
------ .description
------ .images
-
-anime()
------ .url
------ .name
------ .description
------ .poster
------ .title_english
------ .title_jp
------ .alt_titles
------ .opening_themes
------ .ending_themes
------ .episodes
------ .aired
------ .broadcast
------ .rating
------ .ranked
------ .popularity
------ .favorites
-
------ .recommend()
-
-anilyrics()
------ .romaji
------ .english
------ .kanji
-```
+The Official Documentation for animec can be found [here](https://animec.readthedocs.io/en/latest/).
 
 ## Credits
 
