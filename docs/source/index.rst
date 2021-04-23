@@ -1,4 +1,4 @@
-Welcome to animec's documentation
+Animec | Documentation
 ==================================
 
 Description
