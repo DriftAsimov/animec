@@ -4,7 +4,7 @@
 # Animec
 
 A module to get data about anime characters, news, info, lyrics and more.
-The API scrapes [myanimelist](https://myanimelist.net/) to parse requested data.
+The module scrapes [myanimelist](https://myanimelist.net/) to parse requested data.
 
 If you wish to see a feature, please raise an [issue](https://github.com/DriftAsimov/animec). We will surely work on it.
 You can also join our [Discord](https://discord.gg/x3qAZV3) to get regular updates about the module.
