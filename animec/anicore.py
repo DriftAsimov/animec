@@ -10,7 +10,7 @@ class anime:
 
     Parameters
     ----------
-    query: [class:`str <https://docs.python.org/3/library/string.html>`__]
+    query: `str <https://docs.python.org/3/library/string.html#module-string>`__
         The query to be searched for.
 
     Attributes
@@ -46,9 +46,9 @@ class anime:
         Short description about the anime
     poster
         Anime thumbnail
-    opening_themes
+    opening_themes: `list <https://docs.python.org/3/tutorial/datastructures.html>`__
         Opening themes of the series
-    ending_themes
+    ending_themes: `list <https://docs.python.org/3/tutorial/datastructures.html>`__
         Ending themes of the series
     """
 
