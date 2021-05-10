@@ -134,7 +134,15 @@ class anime:
                 return " ".join(returned_text)
 
     def recommend(self):
-
+        """
+        Returns suitable recommendations based on the anime referred while declaring the class. 
+        
+        Returns
+        -------
+        list
+            The list containing the recommendations
+        """
+        
         anime_page = urlopen(f"{self.url}/userrecs")
         soup = BeautifulSoup(anime_page, 'html.parser')
 
@@ -148,5 +156,6 @@ class anime:
         return ri[:4]
 
 class NotFound404(Exception):
-    """Occurs when No Result is Found"""
+    """Raised when No Result is Found"""
+    
     pass
