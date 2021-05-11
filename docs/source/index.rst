@@ -41,12 +41,17 @@ Manually
    $ cd animec
    $ python3 setup.py install
 
+.. note::
+
+   A ratelimit has been added to avoid stressing the module. If that ratelimit is bypassed, then you risk getting your IP banned temporarily from making requests. So it's recommended not to try any such practice.
+
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Classes
 
    ./anicore
    ./aninews
+   ./sagasu
 
 
 Indices and tables
