@@ -23,8 +23,8 @@ copyright = '2021, Drift Asimov'
 author = 'Drift Asimov'
 
 # The full version, including alpha/beta/rc tags
-release = '0.1.2'
-
+setup_file = open("../../setup.py").read().split('version')[1].split("'")[1].split("'")[0]
+release = str(setup_file)
 
 # -- General configuration ---------------------------------------------------
 
