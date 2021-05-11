@@ -3,12 +3,26 @@ import re
 from bs4 import BeautifulSoup
 from urllib.request import urlopen, Request
 
-class NoResultFound(Exception):
-    pass
-
 class charsearch:
+    """
+    Retrieves anime character info via `MyAnimeList <https://myanimelist.net/>`__.
+
+    Parameters
+    ----------
+    query: `str <https://docs.python.org/3/library/string.html#module-string>`__
+        The query to be searched for.
+
+    Attributes
+    ----------
+    url
+        The url to access the character info page.
+    title
+        The name of the character found.
+    image_url
+        The url of the image of the character found.
+    """  
     
-    def __init__(self, query):
+    def __init__(self, query: str):
 
         url = _searchChar_(query = query)
 
@@ -59,6 +73,25 @@ def _lyricsType_(soup, div):
     return lyrics
 
 class anilyrics:
+    """  
+    Retrieves anime lyrics via `animesonglyrics <https://www.animesonglyrics.com/>`__.
+
+    Parameters
+    ----------
+    query: `str <https://docs.python.org/3/library/string.html#module-string>`__
+        The query to be searched for.
+
+    Attributes
+    ----------
+    url
+        The url to access the lyrics page.
+    kanji
+        Kanji version of the lyrics.
+    romaji
+        Romaji version of the lyrics.
+    english
+        English version of the lyrics.
+    """  
 
     def __init__(self, query):
 
@@ -85,3 +118,7 @@ class anilyrics:
         self.romaji = romaji_lyrics
         self.english = english_lyrics
         self.kanji = kanji_lyrics
+
+class NoResultFound(Exception):
+    """ Raised if no result is found"""  
+    pass
