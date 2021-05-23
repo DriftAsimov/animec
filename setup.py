@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '0.1.2'
+version = '0.1.31'
 
 with open('requirements.txt', 'r') as f:
   requirements = f.read().split('\n')
@@ -29,7 +29,7 @@ setup(
   author_email = 'driftasimov@gmail.com',
   license = 'MIT', 
   classifiers = classifiers,
-  keywords = ['animecharacter anime api character myanimelist news animenews animeinfo music animelyrics lyrics'], 
+  keywords = ['animecharacter anime character myanimelist news animenews animeinfo music animelyrics lyrics'], 
   packages = find_packages(),
   install_requires = requirements 
 )
