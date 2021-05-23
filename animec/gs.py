@@ -1,9 +1,8 @@
-from requests import get
 from bs4 import BeautifulSoup
-
+from urllib.request import urlopen, Request
 
 def search(term, num_results=10, lang="en"):
-    usr_agent = {
+    user_agent = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
                       'Chrome/61.0.3163.100 Safari/537.36'}
 
@@ -12,10 +11,10 @@ def search(term, num_results=10, lang="en"):
 
         google_url = 'https://www.google.com/search?q={}&num={}&hl={}'.format(escaped_search_term, number_results+1,
                                                                               language_code)
-        response = get(google_url, headers=usr_agent)
-        response.raise_for_status()
+        response = Request(url = google_url, headers = user_agent)
+        response_open = urlopen(response)
 
-        return response.text
+        return response_open.read()
 
     def parse_results(raw_html):
         soup = BeautifulSoup(raw_html, 'html.parser')
