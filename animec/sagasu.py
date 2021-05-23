@@ -1,5 +1,5 @@
-import animec.gs
 import re
+import animec.gs
 from bs4 import BeautifulSoup
 from urllib.request import urlopen, Request
 
@@ -20,6 +20,8 @@ class charsearch:
         The name of the character found.
     image_url
         The url of the image of the character found.
+    references: `dictionary <https://docs.python.org/3/tutorial/datastructures.html#dictionaries>`__
+        The series the character is referred in.
     """  
     
     def __init__(self, query: str):
@@ -46,9 +48,22 @@ class charsearch:
         title = soup.find('h2')
         title = title.get_text()
 
+        references_base = soup.findAll("td", {"valign" : "top", "class" : "borderClass"}, limit = 10)
+        references_raw = [i.findChildren("a", recursive = False) for i in references_base if i.findChildren("a", recursive = False)]
+
+        references = {}
+
+        for reference in references_raw:
+            
+            reference_title = reference[0].text
+            reference_url = reference[0]['href']
+
+            references[reference_title] = reference_url
+
         self.title = title
         self.url = url
         self.image_url = image_url
+        self.references = references
 
 def _searchChar_(query):
     
