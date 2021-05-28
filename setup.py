@@ -25,6 +25,10 @@ setup(
   long_description = long_description,
   long_description_content_type = 'text/markdown',
   url = 'https://github.com/DriftAsimov/animec',  
+  project_urls = {
+    "Documentation" : "https://animec.readthedocs.io/en/latest/",
+    "Issue tracker" : "https://github.com/DriftAsimov/animec/issues"
+  },
   author = 'DriftAsimov',
   author_email = 'driftasimov@gmail.com',
   license = 'MIT', 
