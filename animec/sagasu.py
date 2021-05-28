@@ -89,7 +89,7 @@ def _lyricsType_(soup, div):
     return lyrics
 
 
-class anilyrics:
+class AniLyrics:
     """  
     Retrieves anime lyrics via `animesonglyrics <https://www.animesonglyrics.com/>`__.
 

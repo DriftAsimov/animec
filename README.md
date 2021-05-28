@@ -28,7 +28,7 @@ from animec import *
 ### Extracting an anime character's data
 
 ```python
-result = charsearch("okabe rintarou")
+result = CharSearch("okabe rintarou")
 
 print(result.title, result.url, result.image_url, sep="\n")
 
@@ -43,7 +43,7 @@ https://cdn.myanimelist.net/images/characters/6/122643.jpg
 ### Requesting anime news
 
 ```python
-news = aninews(3)   #default value is 2
+news = AniNews(3)   #default value is 2
 
 print(news.titles)  #returns news titles
 print(news.links)   #returns news links
@@ -55,7 +55,7 @@ print(news.images)  #returns news images
 ### Getting anime info and recommendations
 
 ```python
-anime = anime("dr stone")
+anime = Anime("dr stone")
 recommendations = anime.recommend()
 
 print(anime.url)
@@ -67,7 +67,7 @@ print(recommendations)  #returns a list of anime recommendations
 ### Anime Lyrics
 
 ```python
-lyrics = anilyrics("Ashiato")
+lyrics = AniLyrics("Ashiato")
 print(lyrics.romaji)
 ```
 
