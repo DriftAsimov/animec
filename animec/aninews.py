@@ -1,10 +1,12 @@
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 
+
 class TooManyRequests(Exception):
     pass
 
-class aninews:
+
+class AniNews:
     """Retrieves Anime News via `MyAnimeList <https://myanimelist.net/>`__.
 
     Parameters
@@ -32,22 +34,21 @@ class aninews:
         html_page = urlopen('https://myanimelist.net/news/tag/new_anime')
         soup = BeautifulSoup(html_page, 'html.parser')
 
-        news_container = soup.findAll('div', {'class' : 'news-unit clearfix rect'}, limit = amount)
+        news_container = soup.findAll('div', {'class': 'news-unit clearfix rect'}, limit=amount)
 
         titles, links, description, images = [], [], [], []
 
         for i in news_container:
-            
             text = i.findChildren("p")[0]
-            a = text.find('a', href = True)
+            a = text.find('a', href=True)
             text = a.get_text()
-            
+
             link = a['href']
 
             image = i.find("img")
             image_url = image['src']
 
-            desc = i.findChildren("div", {'class' : 'text'})[0]
+            desc = i.findChildren("div", {'class': 'text'})[0]
 
             titles.append(text)
             links.append(link)
@@ -57,7 +58,7 @@ class aninews:
         news = zip(titles, links, description, images)
 
         self.__init__ = list(news)
-        
+
         self.titles = titles
         self.links = links
         self.description = description

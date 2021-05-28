@@ -3,7 +3,8 @@ import animec.gs
 from bs4 import BeautifulSoup
 from urllib.request import urlopen, Request
 
-class charsearch:
+
+class CharSearch:
     """
     Retrieves anime character info via `MyAnimeList <https://myanimelist.net/>`__.
 
@@ -22,11 +23,11 @@ class charsearch:
         The url of the image of the character found.
     references: `dictionary <https://docs.python.org/3/tutorial/datastructures.html#dictionaries>`__
         The series the character is referred in.
-    """  
-    
+    """
+
     def __init__(self, query: str):
 
-        url = _searchChar_(query = query)
+        url = _searchChar_(query=query)
 
         if url is None:
             raise NoResultFound("No such anime character found.")
@@ -48,13 +49,13 @@ class charsearch:
         title = soup.find('h2')
         title = title.get_text()
 
-        references_base = soup.findAll("td", {"valign" : "top", "class" : "borderClass"}, limit = 10)
-        references_raw = [i.findChildren("a", recursive = False) for i in references_base if i.findChildren("a", recursive = False)]
+        references_base = soup.findAll("td", {"valign": "top", "class": "borderClass"}, limit=10)
+        references_raw = [i.findChildren("a", recursive=False) for i in references_base if
+                          i.findChildren("a", recursive=False)]
 
         references = {}
 
         for reference in references_raw:
-            
             reference_title = reference[0].text
             reference_url = reference[0]['href']
 
@@ -65,27 +66,28 @@ class charsearch:
         self.image_url = image_url
         self.references = references
 
+
 def _searchChar_(query):
-    
-    for url in animec.gs.search(f"site:myanimelist.net {query} anime character info", num_results = 50):
+    for url in animec.gs.search(f"site:myanimelist.net {query} anime character info", num_results=50):
         if ('myanimelist' in str(url)) and ('character' in str(url)):
             return url
 
-def _searchLyrics_(query):
 
-    for url in animec.gs.search(f"site:animesonglyrics.com {query}", num_results = 5):
+def _searchLyrics_(query):
+    for url in animec.gs.search(f"site:animesonglyrics.com {query}", num_results=5):
         if 'animesonglyrics' in str(url):
             return url
 
-def _lyricsType_(soup, div):
 
-    lyrics_container = soup.find("div", {'id' : div}).text
+def _lyricsType_(soup, div):
+    lyrics_container = soup.find("div", {'id': div}).text
     filtered_page = lyrics_container.split("Correct")[0]
 
     lyrics = filtered_page[:-50]
     lyrics = str(re.sub(' +', ' ', lyrics))
 
     return lyrics
+
 
 class anilyrics:
     """  
@@ -106,7 +108,7 @@ class anilyrics:
         Romaji version of the lyrics.
     english
         English version of the lyrics.
-    """  
+    """
 
     def __init__(self, query):
 
@@ -115,8 +117,9 @@ class anilyrics:
         if url is None:
             raise NoResultFound("No lyrics for this song found.")
 
-        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.3'}
-        req = Request(url = url, headers = headers)
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.3'}
+        req = Request(url=url, headers=headers)
 
         lyrics_page = urlopen(req).read()
         soup = BeautifulSoup(lyrics_page, 'html.parser')
@@ -124,16 +127,17 @@ class anilyrics:
         for breaks in soup.findAll("br"):
             breaks.replace_with("\n")
 
-        romaji_lyrics = _lyricsType_(soup = soup, div = 'tab1')
-        english_lyrics = _lyricsType_(soup = soup, div = 'tab2')
-        kanji_lyrics = _lyricsType_(soup = soup, div = 'tab3')
+        romaji_lyrics = _lyricsType_(soup=soup, div='tab1')
+        english_lyrics = _lyricsType_(soup=soup, div='tab2')
+        kanji_lyrics = _lyricsType_(soup=soup, div='tab3')
 
         self.url = _searchLyrics_(query)
-        
+
         self.romaji = romaji_lyrics
         self.english = english_lyrics
         self.kanji = kanji_lyrics
 
+
 class NoResultFound(Exception):
-    """ Raised if no result is found"""  
+    """ Raised if no result is found"""
     pass
