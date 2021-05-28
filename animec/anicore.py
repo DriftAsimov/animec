@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from urllib.request import urlopen
 from urllib.error import HTTPError
 
-class anime:
+class Anime:
     """Retrieves anime info via `animesonglyrics <https://www.animesonglyrics.com/>`__.
 
     Parameters
