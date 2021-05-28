@@ -32,6 +32,7 @@ release = str(setup_file)
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    "furo",
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
     "sphinx.ext.intersphinx",
@@ -61,7 +62,6 @@ master_doc = 'index'
 # a list of builtin themes.
 #
 html_theme = 'furo'
-html_theme_path = ['.']
 
 html_context = {
     'discord_invite': 'https://discord.gg/x3qAZV3',
