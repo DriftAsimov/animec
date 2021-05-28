@@ -9,6 +9,8 @@ The module scrapes [myanimelist](https://myanimelist.net/) to parse requested da
 If you wish to see a feature, please raise an [issue](https://github.com/DriftAsimov/animec). We will surely work on it.
 You can also join our [Discord](https://discord.gg/x3qAZV3) to get regular updates about the module.
 
+See the Docs for a complete documentation: https://animec.readthedocs.io/en/latest/.
+
 ## Installation and Usage
 
 To install the module:
@@ -28,12 +30,12 @@ from animec import *
 ### Extracting an anime character's data
 
 ```python
-result = charsearch("okabe rintarou")
+result = CharSearch("okabe rintarou")
 
 print(result.title, result.url, result.image_url, sep="\n")
 
 '''
-Output: (As retrieved from myanimelist)
+Output: (As retrieved from myanimelist), check the documentation for a list of all supported attributes
 Rintarou Okabe (岡部 倫太郎)
 https://myanimelist.net/character/35252/Rintarou_Okabe
 https://cdn.myanimelist.net/images/characters/6/122643.jpg
@@ -43,19 +45,17 @@ https://cdn.myanimelist.net/images/characters/6/122643.jpg
 ### Requesting anime news
 
 ```python
-news = aninews(3)   #default value is 2
+news = Aninews()   #default value is 2, check the documentation for a list of all supported attributes
 
 print(news.titles)  #returns news titles
-print(news.links)   #returns news links
 print(news.descripion)   #returns news description
-print(news.images)  #returns news images
 
 ```
 
 ### Getting anime info and recommendations
 
 ```python
-anime = anime("dr stone")
+anime = Anime("dr stone")
 recommendations = anime.recommend()
 
 print(anime.url)
@@ -67,11 +67,11 @@ print(recommendations)  #returns a list of anime recommendations
 ### Anime Lyrics
 
 ```python
-lyrics = anilyrics("Ashiato")
+lyrics = AniLyrics("Ashiato")
 print(lyrics.romaji)
 ```
 
-## API Documentation
+## Animec Documentation
 
 The Official Documentation for animec can be found [here](https://animec.readthedocs.io/en/latest/).
 
@@ -81,9 +81,7 @@ The Official Documentation for animec can be found [here](https://animec.readthe
 Author: DriftAsimov
 GitHub: https://github.com/DriftAsimov
 Language Used: Python
-Sites: 
-https://myanimelist.net/
-https://www.animesonglyrics.com/
+References: https://myanimelist.net/, https://www.animesonglyrics.com/
 ```
 
 ## Contact Us
