@@ -4,7 +4,7 @@ from urllib.request import urlopen
 class TooManyRequests(Exception):
     pass
 
-class aninews:
+class Aninews:
     """Retrieves Anime News via `MyAnimeList <https://myanimelist.net/>`__.
 
     Parameters
