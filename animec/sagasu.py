@@ -3,7 +3,7 @@ import animec.gs
 from bs4 import BeautifulSoup
 from urllib.request import urlopen, Request
 
-class charsearch:
+class CharSearch:
     """
     Retrieves anime character info via `MyAnimeList <https://myanimelist.net/>`__.
 
@@ -87,7 +87,7 @@ def _lyricsType_(soup, div):
 
     return lyrics
 
-class anilyrics:
+class AniLyrics:
     """  
     Retrieves anime lyrics via `animesonglyrics <https://www.animesonglyrics.com/>`__.
 
