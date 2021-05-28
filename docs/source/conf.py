@@ -13,6 +13,7 @@
 
 import os
 import sys
+import furo
 
 sys.path.insert(0, os.path.abspath('../../'))
 
@@ -61,6 +62,7 @@ master_doc = 'index'
 # a list of builtin themes.
 #
 html_theme = 'furo'
+html_them_path = ['.']
 
 html_context = {
     'discord_invite': 'https://discord.gg/x3qAZV3',
