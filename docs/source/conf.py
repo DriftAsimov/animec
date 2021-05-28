@@ -36,6 +36,7 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx.ext.intersphinx",
     "sphinx.ext.extlinks",
+    "furo"
 ]
 
 autodoc_member_order = 'bysource'
@@ -60,7 +61,7 @@ master_doc = 'index'
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'sphinx_rtd_theme'
+html_theme = 'furo'
 
 html_context = {
     'discord_invite': 'https://discord.gg/x3qAZV3',
