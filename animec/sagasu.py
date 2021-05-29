@@ -2,7 +2,7 @@ import re
 import animec.gs
 from bs4 import BeautifulSoup
 from urllib.request import urlopen, Request
-from exceptions import NoResultFound
+from animec.exceptions import NoResultFound
 
 class CharSearch:
     """
