@@ -2,6 +2,7 @@ import re
 import animec.gs
 from bs4 import BeautifulSoup
 from urllib.request import urlopen, Request
+from animec.exceptions import NoResultFound
 
 class CharSearch:
     """
@@ -133,7 +134,3 @@ class AniLyrics:
         self.romaji = romaji_lyrics
         self.english = english_lyrics
         self.kanji = kanji_lyrics
-
-class NoResultFound(Exception):
-    """ Raised if no result is found"""  
-    pass

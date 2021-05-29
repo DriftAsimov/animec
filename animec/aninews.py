@@ -1,8 +1,6 @@
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
-
-class TooManyRequests(Exception):
-    pass
+from animec.exceptions import TooManyRequests
 
 class Aninews:
     """Retrieves Anime News via `MyAnimeList <https://myanimelist.net/>`__.

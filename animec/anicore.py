@@ -4,6 +4,7 @@ import re
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 from urllib.error import HTTPError
+from animec.exceptions import NotFound404
 
 class Anime:
     """Retrieves anime info via `animesonglyrics <https://www.animesonglyrics.com/>`__.
@@ -154,8 +155,3 @@ class Anime:
         ri.pop(0)
 
         return ri[:4]
-
-class NotFound404(Exception):
-    """Raised when No Result is Found"""
-    
-    pass
