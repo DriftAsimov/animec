@@ -91,7 +91,8 @@ class Anime:
         favorites = self._parent_(element = dark_text, txt = "Favorites:")
 
         ranked_text = str(anime_page.find('div', {'class':'spaceit po-r js-statistics-info di-ib'}))
-        ranked = re.search("#.*<", ranked_text).group().split("<")[0]
+        ranked = re.search("#.*<", ranked_text)
+        ranked = ranked.group().split("<")[0] if ranked else None
 
         description = anime_page.find('p', {'itemprop' : 'description'}).text
         poster = anime_page.find('img', {'itemprop' : 'image'})
