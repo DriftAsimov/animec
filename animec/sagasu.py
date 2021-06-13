@@ -4,7 +4,7 @@ import animec.helpers
 from bs4 import BeautifulSoup
 from urllib.request import urlopen, Request
 
-class CharSearch:
+class Charsearch:
     """
     Retrieves anime character info via `MyAnimeList <https://myanimelist.net/>`__.
 
