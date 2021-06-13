@@ -1,12 +1,12 @@
-# -*- coding: utf-8 -*-
-
 import re
-from bs4 import BeautifulSoup
-from urllib.request import urlopen
-from urllib.error import HTTPError
 
-class Anime:
-    """Retrieves anime info via `animesonglyrics <https://www.animesonglyrics.com/>`__.
+from bs4 import BeautifulSoup
+from animec.helpers import search
+from urllib.request import urlopen, Request
+
+class Charsearch:
+    """
+    Retrieves anime character info via `MyAnimeList <https://myanimelist.net/>`__.
 
     Parameters
     ----------
@@ -16,147 +16,125 @@ class Anime:
     Attributes
     ----------
     url
-        Returns the url of the anime main page
-    name 
-        Returns the main name of the anime
+        The url to access the character info page.
+    title
+        The name of the character found.
+    image_url
+        The url of the image of the character found.
+    references: `dictionary <https://docs.python.org/3/tutorial/datastructures.html#dictionaries>`__
+        The series the character is referred in.
+    """  
     
-    title_english
-        Returns the english title
-    title_jp
-        Returns the japanese title
-    alt_titles
-        Returns alternative titles
-    
-    episodes
-        The episode count of the anime
-    aired
-        Anime's airing time
-    broadcast
-        The broadcast day of the series
-    rating
-        Rating given to the anime
-    ranked
-        Anime's ranking
-    popularity
-        The popularity of the anime
-    favorites
-        Count of people who tagged the anime as their favourite
-    
-    description
-        Short description about the anime
-    poster
-        Anime thumbnail
-    opening_themes: `list <https://docs.python.org/3/tutorial/datastructures.html>`__
-        Opening themes of the series
-    ending_themes: `list <https://docs.python.org/3/tutorial/datastructures.html>`__
-        Ending themes of the series
-    """
-
     def __init__(self, query: str):
 
-        if " " in query:
-            query = query.replace(" ", "%20")
+        url = _searchChar_(query = query)
 
-        to_open = f"https://myanimelist.net/anime.php?q={query}"
+        if url is None:
+            raise NoResultFound("No such anime character found.")
 
-        encoded_url = to_open.encode('ascii','ignore')
-        try:
-            html_page = urlopen(encoded_url.decode('utf-8'))
-        except HTTPError:
-            raise NotFound404("Can't find a matching result.")
-        
+        html_page = urlopen(url)
         soup = BeautifulSoup(html_page, 'html.parser')
 
-        anime_div = soup.find("td", {'class': 'borderClass bgColor0'})
-        url = anime_div.find("a", href = True)
+        images = soup.findAll('img')
 
-        anime_page_open = urlopen(url['href'])
-        anime_page = BeautifulSoup(anime_page_open, 'html.parser')
-        
-        name = anime_page.find("h1", {'class' : 'title-name h1_bold_none'})
+        string_list = [str(i) for i in images]
 
-        spaceit_divs = anime_page.findAll('div', {'class' : 'spaceit_pad'})
-        spaced_divs = anime_page.findAll('div', {'class' : 'spaceit'})
-        dark_text = anime_page.findAll('span', {'class':'dark_text'})
-        
-        title_english = self._divCh_(div = spaceit_divs, txt = "English:")
-        title_jp = self._divCh_(div = spaceit_divs, txt = "Japanese:")
-        alt_titles = self._divCh_(div = spaceit_divs, txt = "Synonyms:")
+        for k in string_list:
+            if 'characters' in k:
+                char = k
+                break
 
-        episodes = self._divCh_(div = spaced_divs, txt = "Episodes:")
-        aired = self._divCh_(div = spaced_divs, txt = "Aired:")
-        broadcast = self._divCh_(div = spaced_divs, txt = "Broadcast:")
-        rating = self._parent_(element = dark_text, txt = "Rating:")
-        popularity = self._parent_(element = dark_text, txt = "Popularity:")
-        favorites = self._parent_(element = dark_text, txt = "Favorites:")
+        image_url = re.search("https://.*jpg", char).group()
 
-        ranked_text = str(anime_page.find('div', {'class':'spaceit po-r js-statistics-info di-ib'}))
-        ranked = re.search("#.*<", ranked_text)
-        ranked = ranked.group().split("<")[0] if ranked else None
+        title = soup.find('h2')
+        title = title.get_text()
 
-        description = anime_page.find('p', {'itemprop' : 'description'}).text
-        poster = anime_page.find('img', {'itemprop' : 'image'})
+        references_base = soup.findAll("td", {"valign" : "top", "class" : "borderClass"}, limit = 10)
+        references_raw = [i.findChildren("a", recursive = False) for i in references_base if i.findChildren("a", recursive = False)]
 
-        opening_themes = [theme.text for theme in anime_page.find('div', {'class':'theme-songs js-theme-songs opnening'}).findChildren('span', {'class':'theme-song'})]
-        ending_themes = [theme.text for theme in anime_page.find('div', {'class':'theme-songs js-theme-songs ending'}).findChildren('span', {'class':'theme-song'})]
+        references = {}
 
-        self.url = url['href']
-        self.name = name.text
-        
-        self.title_english = title_english
-        self.title_jp = title_jp
-        self.alt_titles = alt_titles
+        for reference in references_raw:
+            
+            reference_title = reference[0].text
+            reference_url = reference[0]['href']
 
-        self.episodes = episodes
-        self.aired = aired
-        self.broadcast = broadcast
-        self.rating = rating
-        self.ranked = ranked
-        self.popularity = popularity
-        self.favorites = favorites
+            references[reference_title] = reference_url
 
-        self.description = description
-        self.poster = poster['data-src']
-        self.opening_themes = opening_themes
-        self.ending_themes = ending_themes
+        self.title = title
+        self.url = url
+        self.image_url = image_url
+        self.references = references
 
-    def _divCh_(self, div: list, txt: str):
-
-        for container in div:
-            if txt in container.text:
-                div_text = container.text.split(txt)[1].split()
-                return " ".join(div_text)
-
-    def _parent_(self, element: list, txt: str):
-
-        for e in element:
-            if txt in e.text:
-                returned_text = e.parent.text.split(txt)[1].split()
-                return " ".join(returned_text)
-
-    def recommend(self):
-        """
-        Returns suitable recommendations based on the anime referred while declaring the class. 
-        
-        Returns
-        -------
-        list
-            The list containing the recommendations
-        """
-        
-        anime_page = urlopen(f"{self.url}/userrecs")
-        soup = BeautifulSoup(anime_page, 'html.parser')
-
-        headers = soup.findAll("strong", limit = 15)
-
-        recommendations = [i.get_text() for i in headers]
-
-        ri = [i for i in recommendations if not i.isdigit()]  
-        ri.pop(0)
-
-        return ri[:4]
-
-class NotFound404(Exception):
-    """Raised when No Result is Found"""
+def _searchChar_(query):
     
+    for url in search(f"site:myanimelist.net {query} anime character info", num_results = 50):
+        if ('myanimelist' in str(url)) and ('character' in str(url)):
+            return url
+
+def _searchLyrics_(query):
+
+    for url in search(f"site:animesonglyrics.com {query}", num_results = 5):
+        if 'animesonglyrics' in str(url):
+            return url
+
+def _lyricsType_(soup, div):
+
+    lyrics_container = soup.find("div", {'id' : div}).text
+    filtered_page = lyrics_container.split("Correct")[0]
+
+    lyrics = filtered_page[:-50]
+    lyrics = str(re.sub(' +', ' ', lyrics))
+
+    return lyrics
+
+class AniLyrics:
+    """  
+    Retrieves anime lyrics via `animesonglyrics <https://www.animesonglyrics.com/>`__.
+
+    Parameters
+    ----------
+    query: `str <https://docs.python.org/3/library/string.html#module-string>`__
+        The query to be searched for.
+
+    Attributes
+    ----------
+    url
+        The url to access the lyrics page.
+    kanji
+        Kanji version of the lyrics.
+    romaji
+        Romaji version of the lyrics.
+    english
+        English version of the lyrics.
+    """  
+
+    def __init__(self, query):
+
+        url = _searchLyrics_(query)
+
+        if url is None:
+            raise NoResultFound("No lyrics for this song found.")
+
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.3'}
+        req = Request(url = url, headers = headers)
+
+        lyrics_page = urlopen(req).read()
+        soup = BeautifulSoup(lyrics_page, 'html.parser')
+
+        for breaks in soup.findAll("br"):
+            breaks.replace_with("\n")
+
+        romaji_lyrics = _lyricsType_(soup = soup, div = 'tab1')
+        english_lyrics = _lyricsType_(soup = soup, div = 'tab2')
+        kanji_lyrics = _lyricsType_(soup = soup, div = 'tab3')
+
+        self.url = _searchLyrics_(query)
+        
+        self.romaji = romaji_lyrics
+        self.english = english_lyrics
+        self.kanji = kanji_lyrics
+
+class NoResultFound(Exception):
+    """ Raised if no result is found"""  
     pass
