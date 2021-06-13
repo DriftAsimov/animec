@@ -67,7 +67,7 @@ print(recommendations)  #returns a list of anime recommendations
 ### Anime Lyrics
 
 ```python
-lyrics = AniLyrics("Ashiato")
+lyrics = Anilyrics("Ashiato")
 print(lyrics.romaji)
 ```
 
