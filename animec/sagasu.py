@@ -1,7 +1,7 @@
 import re
-import animec.helpers
 
 from bs4 import BeautifulSoup
+from animec.helpers import search
 from urllib.request import urlopen, Request
 
 class Charsearch:
@@ -68,13 +68,13 @@ class Charsearch:
 
 def _searchChar_(query):
     
-    for url in animec.gs.search(f"site:myanimelist.net {query} anime character info", num_results = 50):
+    for url in search(f"site:myanimelist.net {query} anime character info", num_results = 50):
         if ('myanimelist' in str(url)) and ('character' in str(url)):
             return url
 
 def _searchLyrics_(query):
 
-    for url in animec.gs.search(f"site:animesonglyrics.com {query}", num_results = 5):
+    for url in search(f"site:animesonglyrics.com {query}", num_results = 5):
         if 'animesonglyrics' in str(url):
             return url
 
@@ -88,7 +88,7 @@ def _lyricsType_(soup, div):
 
     return lyrics
 
-class AniLyrics:
+class Anilyrics:
     """  
     Retrieves anime lyrics via `animesonglyrics <https://www.animesonglyrics.com/>`__.
 
