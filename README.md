@@ -30,7 +30,7 @@ from animec import *
 ### Extracting an anime character's data
 
 ```python
-result = CharSearch("okabe rintarou")
+result = Charsearch("okabe rintarou")
 
 print(result.title, result.url, result.image_url, sep="\n")
 
