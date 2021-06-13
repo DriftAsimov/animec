@@ -1,5 +1,6 @@
 import re
-import animec.gs
+import animec.helpers
+
 from bs4 import BeautifulSoup
 from urllib.request import urlopen, Request
 
