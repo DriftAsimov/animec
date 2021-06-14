@@ -45,7 +45,7 @@ https://cdn.myanimelist.net/images/characters/6/122643.jpg
 ### Requesting anime news
 
 ```python
-news = Aninews()   #default value is 2, check the documentation for a list of all supported attributes
+news = Aninews()   #default value is 3, check the documentation for a list of all supported attributes
 
 print(news.titles)  #returns news titles
 print(news.descripion)   #returns news description
@@ -56,12 +56,11 @@ print(news.descripion)   #returns news description
 
 ```python
 anime = Anime("dr stone")
-recommendations = anime.recommend()
 
 print(anime.url)
 print(anime.name)
 print(anime.description)    #check the documentation for a list of all supported attributes
-print(recommendations)  #returns a list of anime recommendations
+print(anime.recommend())  #returns a list of anime recommendations
 ```
 
 ### Anime Lyrics
