@@ -1,12 +1,13 @@
+# -*- coding: utf-8 -*-
+
 import re
 
 from bs4 import BeautifulSoup
-from animec.helpers import search
-from urllib.request import urlopen, Request
+from urllib.request import urlopen
+from urllib.error import HTTPError
 
-class Charsearch:
-    """
-    Retrieves anime character info via `MyAnimeList <https://myanimelist.net/>`__.
+class Anime:
+    """Retrieves anime info via `animesonglyrics <https://www.animesonglyrics.com/>`__.
 
     Parameters
     ----------
@@ -16,125 +17,191 @@ class Charsearch:
     Attributes
     ----------
     url
-        The url to access the character info page.
-    title
-        The name of the character found.
-    image_url
-        The url of the image of the character found.
-    references: `dictionary <https://docs.python.org/3/tutorial/datastructures.html#dictionaries>`__
-        The series the character is referred in.
-    """  
+        Returns the url of the anime main page
+    name 
+        Returns the main name of the anime
     
+    title_english
+        Returns the english title
+    title_jp
+        Returns the japanese title
+    alt_titles
+        Returns alternative titles
+    
+    episodes
+        The episode count of the anime
+    aired
+        Anime's airing time
+    broadcast
+        The broadcast day of the series
+    rating
+        Rating given to the anime
+    ranked
+        Anime's ranking
+    popularity
+        The popularity of the anime
+    favorites
+        Count of people who tagged the anime as their favourite
+
+    type
+        Series type
+    status
+        Series current status with reference to airing
+    producers: `list <https://docs.python.org/3/tutorial/datastructures.html>`__
+        List of studios which contributed to the production of the series
+    genres: `list <https://docs.python.org/3/tutorial/datastructures.html>`__
+        List of anime genres or kind
+    
+    description
+        Short description about the anime
+    poster
+        Anime thumbnail
+    teaser
+        Anime teaser/promotion either official or unofficial
+    opening_themes: `list <https://docs.python.org/3/tutorial/datastructures.html>`__
+        Opening themes of the series
+    ending_themes: `list <https://docs.python.org/3/tutorial/datastructures.html>`__
+        Ending themes of the series
+    """
+
     def __init__(self, query: str):
 
-        url = _searchChar_(query = query)
+        if " " in query:
+            query = query.replace(" ", "%20")
 
-        if url is None:
-            raise NoResultFound("No such anime character found.")
+        to_open = f"https://myanimelist.net/anime.php?q={query}"
 
-        html_page = urlopen(url)
+        encoded_url = to_open.encode('ascii','ignore')
+        try:
+            html_page = urlopen(encoded_url.decode('utf-8'))
+        except HTTPError:
+            raise NotFound("Can't find a matching result." + f" Code: {HTTPError.code}")
+        
         soup = BeautifulSoup(html_page, 'html.parser')
 
-        images = soup.findAll('img')
+        anime_div = soup.find("td", {'class': 'borderClass bgColor0'})
+        url = anime_div.find("a", href = True)['href']
 
-        string_list = [str(i) for i in images]
-
-        for k in string_list:
-            if 'characters' in k:
-                char = k
-                break
-
-        image_url = re.search("https://.*jpg", char).group()
-
-        title = soup.find('h2')
-        title = title.get_text()
-
-        references_base = soup.findAll("td", {"valign" : "top", "class" : "borderClass"}, limit = 10)
-        references_raw = [i.findChildren("a", recursive = False) for i in references_base if i.findChildren("a", recursive = False)]
-
-        references = {}
-
-        for reference in references_raw:
-            
-            reference_title = reference[0].text
-            reference_url = reference[0]['href']
-
-            references[reference_title] = reference_url
-
-        self.title = title
-        self.url = url
-        self.image_url = image_url
-        self.references = references
-
-def _searchChar_(query):
-    
-    for url in search(f"site:myanimelist.net {query} anime character info", num_results = 50):
-        if ('myanimelist' in str(url)) and ('character' in str(url)):
-            return url
-
-def _searchLyrics_(query):
-
-    for url in search(f"site:animesonglyrics.com {query}", num_results = 5):
-        if 'animesonglyrics' in str(url):
-            return url
-
-def _lyricsType_(soup, div):
-
-    lyrics_container = soup.find("div", {'id' : div}).text
-    filtered_page = lyrics_container.split("Correct")[0]
-
-    lyrics = filtered_page[:-50]
-    lyrics = str(re.sub(' +', ' ', lyrics))
-
-    return lyrics
-
-class AniLyrics:
-    """  
-    Retrieves anime lyrics via `animesonglyrics <https://www.animesonglyrics.com/>`__.
-
-    Parameters
-    ----------
-    query: `str <https://docs.python.org/3/library/string.html#module-string>`__
-        The query to be searched for.
-
-    Attributes
-    ----------
-    url
-        The url to access the lyrics page.
-    kanji
-        Kanji version of the lyrics.
-    romaji
-        Romaji version of the lyrics.
-    english
-        English version of the lyrics.
-    """  
-
-    def __init__(self, query):
-
-        url = _searchLyrics_(query)
-
-        if url is None:
-            raise NoResultFound("No lyrics for this song found.")
-
-        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.3'}
-        req = Request(url = url, headers = headers)
-
-        lyrics_page = urlopen(req).read()
-        soup = BeautifulSoup(lyrics_page, 'html.parser')
-
-        for breaks in soup.findAll("br"):
-            breaks.replace_with("\n")
-
-        romaji_lyrics = _lyricsType_(soup = soup, div = 'tab1')
-        english_lyrics = _lyricsType_(soup = soup, div = 'tab2')
-        kanji_lyrics = _lyricsType_(soup = soup, div = 'tab3')
-
-        self.url = _searchLyrics_(query)
+        anime_page_open = urlopen(url)
+        anime_page = BeautifulSoup(anime_page_open, 'html.parser')
         
-        self.romaji = romaji_lyrics
-        self.english = english_lyrics
-        self.kanji = kanji_lyrics
+        name = anime_page.find("h1", {'class' : 'title-name h1_bold_none'})
 
-class NoResultFound(Exception):
-    """ Raised if no result is found"""  
+        spaceit_divs = anime_page.findAll('div', {'class' : 'spaceit_pad'})
+        spaced_divs = anime_page.findAll('div', {'class' : 'spaceit'})
+        dark_text = anime_page.findAll('span', {'class':'dark_text'})
+        
+        title_english = self._divCh_(div = spaceit_divs, txt = "English:")
+        title_jp = self._divCh_(div = spaceit_divs, txt = "Japanese:")
+        alt_titles = self._divCh_(div = spaceit_divs, txt = "Synonyms:")
+
+        episodes = self._divCh_(div = spaced_divs, txt = "Episodes:")
+        aired = self._divCh_(div = spaced_divs, txt = "Aired:")
+        broadcast = self._divCh_(div = spaced_divs, txt = "Broadcast:")
+        
+        rating = self._parent_(element = dark_text, txt = "Rating:")
+        popularity = self._parent_(element = dark_text, txt = "Popularity:")
+        favorites = self._parent_(element = dark_text, txt = "Favorites:")
+        _type = self._parent_(element = dark_text, txt = "Type:")
+        status = self._parent_(element = dark_text, txt = "Status:")
+        producers = self._parent_(element = dark_text, txt = "Producers:").split(", ")
+        genres = self._parent_(element = dark_text, txt = "Genres:").split(", ")
+
+        ranked_text = str(anime_page.find('div', {'class':'spaceit po-r js-statistics-info di-ib'}))
+        ranked = re.search("#.*<", ranked_text)
+        ranked = ranked.group().split("<")[0] if ranked else None
+
+        description = anime_page.find('p', {'itemprop' : 'description'}).text
+        poster = anime_page.find('img', {'itemprop' : 'image'})['data-src']
+
+        opening_themes = [theme.text for theme in anime_page.find('div', {'class':'theme-songs js-theme-songs opnening'}).findChildren('span', {'class':'theme-song'})]
+        ending_themes = [theme.text for theme in anime_page.find('div', {'class':'theme-songs js-theme-songs ending'}).findChildren('span', {'class':'theme-song'})]
+
+        self.url = url or None
+        self.name = name.text or None
+        
+        self.title_english = title_english or None
+        self.title_jp = title_jp or None
+        self.alt_titles = alt_titles or None
+
+        self.episodes = episodes or None
+        self.aired = aired or None
+        self.broadcast = broadcast or None
+        self.rating = rating or None
+        self.ranked = ranked or None
+        self.popularity = popularity or None
+        self.favorites = favorites or None
+
+        self.type = _type or None
+        self.status = status or None
+        self.producers = producers
+        self.genres = genres or None
+
+        self.description = description or None
+        self.poster = poster or None
+        self.opening_themes = opening_themes or None
+        self.ending_themes = ending_themes or None
+
+    def is_nsfw(self) -> bool:
+        """
+        Returns
+        -------
+        bool
+            Returns if the series is nsfw
+        """
+
+        return "Nudity" in self.rating
+
+    @property
+    def teaser(self):
+
+        url = urlopen(self.url + "/video")
+        soup = BeautifulSoup(url, 'html.parser')
+
+        div = soup.find('div', {'class' : 'video-list-outer po-r pv'})
+        teaser_link = div.findChildren('a', {'class' : "iframe js-fancybox-video video-list di-ib po-r"})[0]['href']
+
+        if teaser_link and "youtube" in teaser_link:
+            _id = teaser_link.split("embed/")[1].split("?")[0]
+            teaser_link = f"https://www.youtube.com/watch?v={_id}"
+
+        return teaser_link or None
+
+    def _divCh_(self, div: list, txt: str):
+
+        for container in div:
+            if txt in container.text:
+                div_text = container.text.split(txt)[1].split()
+                return " ".join(div_text)
+
+    def _parent_(self, element: list, txt: str):
+
+        for e in element:
+            if txt in e.text:
+                returned_text = e.parent.text.split(txt)[1].split()
+                return " ".join(returned_text)
+
+    def recommend(self) -> list:
+        """
+        Returns
+        -------
+        list
+            Returns suitable recommendations based on the anime referred while declaring the class
+        """
+        
+        anime_page = urlopen(f"{self.url}/userrecs")
+        soup = BeautifulSoup(anime_page, 'html.parser')
+
+        headers = soup.findAll("strong", limit = 15)
+
+        recommendations = [i.get_text() for i in headers]
+
+        ri = [i for i in recommendations if not i.isdigit()]  
+        ri.pop(0)
+
+        return ri[:5]
+
+class NotFound(Exception):
+    """Raised when no result is found or a HTTP error is raised"""
+    
     pass
