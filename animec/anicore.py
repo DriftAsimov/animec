@@ -150,7 +150,7 @@ class Anime:
             Returns if the series is nsfw
         """
 
-        return "Nudity" in self.rating
+        return any(i in self.rating.lower() for i in ["nudity", "hentai"])
 
     @property
     def teaser(self):
