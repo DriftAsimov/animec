@@ -85,6 +85,5 @@ References: https://myanimelist.net/, https://www.animesonglyrics.com/
 
 ## Contact Us
 ```
-Mail: driftasimov@gmail.com
 Discord: Drift Asimov#3338 | https://discord.gg/x3qAZV3
 ```
