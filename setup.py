@@ -27,7 +27,8 @@ setup(
   url = 'https://github.com/DriftAsimov/animec',  
   project_urls = {
     "Documentation" : "https://animec.readthedocs.io/en/latest/",
-    "Issue tracker" : "https://github.com/DriftAsimov/animec/issues"
+    "Issue tracker" : "https://github.com/DriftAsimov/animec/issues",
+    "Github" : "https://github.com/DriftAsimov/animec"
   },
   author = 'DriftAsimov',
   author_email = 'driftasimov@gmail.com',
