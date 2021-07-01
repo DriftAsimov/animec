@@ -70,20 +70,10 @@ lyrics = Anilyrics("Ashiato")
 print(lyrics.romaji)
 ```
 
-## Animec Documentation
-
-The Official Documentation for animec can be found [here](https://animec.readthedocs.io/en/latest/).
-
-## Credits
-
-```
-Author: DriftAsimov
-GitHub: https://github.com/DriftAsimov
-Language Used: Python
-References: https://myanimelist.net/, https://www.animesonglyrics.com/
-```
-
-## Contact Us
-```
-Discord: Drift Asimov#3338 | https://discord.gg/x3qAZV3
-```
+## Links
+* [Documentation](https://animec.readthedocs.io/en/latest/)
+* [GitHub](https://github.com/DriftAsimov)
+* [MyAnimeList](https://myanimelist.net/)
+* [Animesonglyrics](https://www.animesonglyrics.com/)
+* [Kaomoji](http://kaomoji.ru/en/)
+* [Discord](https://discord.gg/x3qAZV3)
