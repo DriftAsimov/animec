@@ -1,8 +1,6 @@
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
-
-class TooManyRequests(Exception):
-    pass
+from .errors import TooManyRequests
 
 class Aninews:
     """Retrieves Anime News via `MyAnimeList <https://myanimelist.net/>`__.
@@ -29,7 +27,7 @@ class Aninews:
         if amount >= 9:
             raise TooManyRequests("Keep requests below 9 to avoid stressing the module.")
 
-        html_page = urlopen('https://myanimelist.net/news/tag/new_anime')
+        html_page = urlopen('https://myanimelist.net/news')
         soup = BeautifulSoup(html_page, 'html.parser')
 
         news_container = soup.findAll('div', {'class' : 'news-unit clearfix rect'}, limit = amount)
@@ -53,10 +51,6 @@ class Aninews:
             links.append(link)
             description.append(" ".join(desc.text.split()))
             images.append(image_url)
-
-        news = zip(titles, links, description, images)
-
-        self.__init__ = list(news)
         
         self.titles = titles
         self.links = links
