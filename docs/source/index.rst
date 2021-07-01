@@ -46,12 +46,15 @@ Manually
    A ratelimit has been added to avoid stressing the module. If that ratelimit is bypassed, then you risk getting your IP banned temporarily from making requests. So it's recommended not to try any such practice.
 
 .. toctree::
-   :maxdepth: 3
-   :caption: Classes
+   :maxdepth: 1
+   :caption: Classes and methods
 
-   ./anicore
+   ./anime
+   ./anilyrics
    ./aninews
-   ./sagasu
+   ./charsearch
+   ./kao
+   ./exceptions
 
 
 Indices and tables
