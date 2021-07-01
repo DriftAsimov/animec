@@ -8,7 +8,7 @@ from urllib.error import HTTPError
 from .errors import NoResultFound
 
 class Anime:
-    """Retrieves anime info via `animesonglyrics <https://www.animesonglyrics.com/>`__.
+    """Retrieves anime info via `MyAnimeList <https://myanimelist.net/>`__.
 
     Parameters
     ----------
@@ -190,7 +190,7 @@ class Anime:
             Returns suitable recommendations based on the anime referred while declaring the class
         """
         
-        anime_page = urlopen(f"{self.url}/userrecs")
+        anime_page = urlopen(self.url + "/userrecs")
         soup = BeautifulSoup(anime_page, 'html.parser')
 
         headers = soup.findAll("strong", limit = 15)
