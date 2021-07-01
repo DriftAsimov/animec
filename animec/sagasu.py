@@ -1,8 +1,13 @@
+# -*- coding: utf-8 -*-
+
 import re
+import random
 
 from bs4 import BeautifulSoup
-from animec.helpers import search
 from urllib.request import urlopen, Request
+
+from .helpers import search
+from .errors import NoResultFound
 
 class Charsearch:
     """
@@ -135,6 +140,36 @@ class Anilyrics:
         self.english = english_lyrics
         self.kanji = kanji_lyrics
 
-class NoResultFound(Exception):
-    """ Raised if no result is found"""  
-    pass
+def kao(count: int = 1) -> list:
+    """
+    Parameters
+    ----------
+    count: `int`
+        Number of kaomojis to request
+
+    Returns
+    -------
+    list
+        List comprising of random kaomojis
+    """
+
+    URL = "http://kaomoji.ru/en/"
+
+    html_page = urlopen(URL)
+    soup = BeautifulSoup(html_page, 'html.parser')
+
+    tables = soup.findAll('table', {'class' : 'table_kaomoji'})
+
+    kaomojis = []
+
+    for table in tables:
+
+        kaomoji = table.findChildren('td')
+        
+        for i in kaomoji:
+
+            kaomojis.append(str(i.text))
+
+    kao = random.sample(kaomojis, count)
+
+    return kao
