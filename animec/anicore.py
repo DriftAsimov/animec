@@ -5,6 +5,7 @@ import re
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 from urllib.error import HTTPError
+from urllib.parse import quote
 from .errors import NoResultFound
 
 class Anime:
@@ -70,20 +71,22 @@ class Anime:
         if " " in query:
             query = query.replace(" ", "%20")
 
-        to_open = f"https://myanimelist.net/anime.php?q={query}"
+        to_open = "https://myanimelist.net/anime.php?q={}".format(query)
 
-        encoded_url = to_open.encode('ascii','ignore')
-        try:
-            html_page = urlopen(encoded_url.decode('utf-8'))
-        except HTTPError:
-            raise NoResultFound("Can't find a matching result.")
+        html_page = urlopen(to_open)
         
         soup = BeautifulSoup(html_page, 'html.parser')
 
         anime_div = soup.find("td", {'class': 'borderClass bgColor0'})
         url = anime_div.find("a", href = True)['href']
 
-        anime_page_open = urlopen(url)
+        safe_url = quote(url, safe = ' <>="/:!')
+
+        try:
+            anime_page_open = urlopen(safe_url)
+        except HTTPError:
+            raise NoResultFound("Can't find a matching result.")
+        
         anime_page = BeautifulSoup(anime_page_open, 'html.parser')
         
         name = anime_page.find("h1", {'class' : 'title-name h1_bold_none'})
