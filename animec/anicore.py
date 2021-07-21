@@ -84,8 +84,8 @@ class Anime:
 
         try:
             anime_page_open = urlopen(safe_url)
-        except HTTPError:
-            raise NoResultFound("Can't find a matching result.")
+        except HTTPError as e:
+            raise NoResultFound(f"Can't find a matching result. HTTP Error: {e.code}")
         
         anime_page = BeautifulSoup(anime_page_open, 'html.parser')
         
