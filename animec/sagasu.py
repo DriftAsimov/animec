@@ -5,6 +5,7 @@ import random
 
 from bs4 import BeautifulSoup
 from urllib.request import urlopen, Request
+from urllib.parse import quote
 
 from .helpers import search
 from .errors import NoResultFound
@@ -37,7 +38,9 @@ class Charsearch:
         if url is None:
             raise NoResultFound("No such anime character found.")
 
-        html_page = urlopen(url)
+        safe_url = quote(url, safe = ' <>="/:!')
+
+        html_page = urlopen(safe_url)
         soup = BeautifulSoup(html_page, 'html.parser')
 
         images = soup.findAll('img')
