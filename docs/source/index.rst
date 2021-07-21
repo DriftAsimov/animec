@@ -53,6 +53,7 @@ Manually
    ./anilyrics
    ./aninews
    ./charsearch
+   ./waifu
    ./kao
    ./exceptions
 
