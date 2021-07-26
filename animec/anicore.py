@@ -95,6 +95,9 @@ class Anime:
         spaced_divs = anime_page.findAll('div', {'class' : 'spaceit'})
         dark_text = anime_page.findAll('span', {'class':'dark_text'})
         
+        self._dark = dark_text
+        self._page = anime_page
+
         title_english = self._divCh_(div = spaceit_divs, txt = "English:")
         title_jp = self._divCh_(div = spaceit_divs, txt = "Japanese:")
         alt_titles = self._divCh_(div = spaceit_divs, txt = "Synonyms:")
@@ -109,7 +112,6 @@ class Anime:
         _type = self._parent_(element = dark_text, txt = "Type:")
         status = self._parent_(element = dark_text, txt = "Status:")
         producers = self._parent_(element = dark_text, txt = "Producers:").split(", ")
-        genres = self._parent_(element = dark_text, txt = "Genres:").split(", ")
 
         ranked_text = str(anime_page.find('div', {'class':'spaceit po-r js-statistics-info di-ib'}))
         ranked = re.search("#.*<", ranked_text)
@@ -120,7 +122,7 @@ class Anime:
 
         opening_themes = [theme.text for theme in anime_page.find('div', {'class':'theme-songs js-theme-songs opnening'}).findChildren('span', {'class':'theme-song'})]
         ending_themes = [theme.text for theme in anime_page.find('div', {'class':'theme-songs js-theme-songs ending'}).findChildren('span', {'class':'theme-song'})]
-
+        
         self.url = url or None
         self.name = name.text or None
         
@@ -139,7 +141,6 @@ class Anime:
         self.type = _type or None
         self.status = status or None
         self.producers = producers
-        self.genres = genres or None
 
         self.description = description or None
         self.poster = poster or None
@@ -155,6 +156,22 @@ class Anime:
         """
 
         return any(i in self.rating.lower() for i in ["nudity", "hentai"])
+
+    @property
+    def genres(self):
+
+        genres = []
+
+        for container in self._dark:
+            if "Genres" in container.text:
+                parent = container.parent
+
+        links = parent.findChildren("a")
+
+        for sub in links:
+            genres.append(sub.text)
+          
+        return genres or None
 
     @property
     def teaser(self):
@@ -182,7 +199,7 @@ class Anime:
 
         for e in element:
             if txt in e.text:
-                returned_text = e.parent.text.split(txt)[1].split()
+                returned_text = e.parent.text.split(txt)[1]
                 return " ".join(returned_text)
 
     def recommend(self) -> list:
