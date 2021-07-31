@@ -86,16 +86,6 @@ def _searchLyrics_(query):
         if 'animesonglyrics' in str(url):
             return url
 
-def _lyricsType_(soup, div):
-
-    lyrics_container = soup.find("div", {'id' : div}).text
-    filtered_page = lyrics_container.split("Correct")[0]
-
-    lyrics = filtered_page[:-50]
-    lyrics = str(re.sub(' +', ' ', lyrics))
-
-    return lyrics
-
 class Anilyrics:
     """  
     Retrieves anime lyrics via `animesonglyrics <https://www.animesonglyrics.com/>`__.
@@ -109,19 +99,13 @@ class Anilyrics:
     ----------
     url
         The url to access the lyrics page.
-    kanji
-        Kanji version of the lyrics.
-    romaji
-        Romaji version of the lyrics.
-    english
-        English version of the lyrics.
     """  
 
     def __init__(self, query):
 
         url = _searchLyrics_(query)
 
-        if url is None:
+        if not url:
             raise NoResultFound("No lyrics for this song found.")
 
         headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.3'}
@@ -133,15 +117,53 @@ class Anilyrics:
         for breaks in soup.findAll("br"):
             breaks.replace_with("\n")
 
-        romaji_lyrics = _lyricsType_(soup = soup, div = 'tab1')
-        english_lyrics = _lyricsType_(soup = soup, div = 'tab2')
-        kanji_lyrics = _lyricsType_(soup = soup, div = 'tab3')
-
         self.url = _searchLyrics_(query)
-        
-        self.romaji = romaji_lyrics
-        self.english = english_lyrics
-        self.kanji = kanji_lyrics
+        self._soup = soup
+
+    def _lyricsType_(self, div):
+
+        lyrics_container = self._soup.find("div", {'id' : div}).text
+        filtered_page = lyrics_container.split("Correct")[0]
+
+        lyrics = filtered_page[:-50]
+        lyrics = str(re.sub(' +', ' ', lyrics)).strip()
+
+        return lyrics
+
+    def romaji(self) -> str:
+        """
+        Returns
+        -------
+        list
+            Lyrics in their romaji translation
+        """
+
+        romaji_lyrics = self._lyricsType_('tab1')
+        return romaji_lyrics
+
+    def english(self) -> str:
+        """
+        Returns
+        -------
+        str
+            Lyrics in their english translation
+        """
+
+        english_lyrics = self._lyricsType_('tab2')
+        return english_lyrics
+
+    def kanji(self) -> str:
+        """
+        Returns
+        -------
+        str
+            Lyrics in their kanji translation
+        """
+
+        kanji_lyrics = self._lyricsType_('tab3')
+        return kanji_lyrics
+
+    romanji = romaji
 
 def kao(count: int = 1) -> list:
     """
