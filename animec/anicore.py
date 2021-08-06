@@ -73,7 +73,10 @@ class Anime:
 
         to_open = "https://myanimelist.net/anime.php?q={}".format(query)
 
-        html_page = urlopen(to_open)
+        try:
+            html_page = urlopen(to_open, timeout = 5)
+        except HTTPError as e:
+            raise NoResultFound(f"Can't find a matching result. HTTP Error: {e.code}")
         
         soup = BeautifulSoup(html_page, 'html.parser')
 
@@ -83,7 +86,7 @@ class Anime:
         safe_url = quote(url, safe = ' <>="/:!')
 
         try:
-            anime_page_open = urlopen(safe_url)
+            anime_page_open = urlopen(safe_url, timeout = 5)
         except HTTPError as e:
             raise NoResultFound(f"Can't find a matching result. HTTP Error: {e.code}")
         
@@ -176,7 +179,7 @@ class Anime:
     @property
     def teaser(self):
 
-        url = urlopen(self.url + "/video")
+        url = urlopen(self.url + "/video", timeout = 5)
         soup = BeautifulSoup(url, 'html.parser')
 
         div = soup.find('div', {'class' : 'video-list-outer po-r pv'})
