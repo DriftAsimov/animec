@@ -199,7 +199,7 @@ class Anime:
 
         for e in element:
             if txt in e.text:
-                returned_text = e.parent.text.split(txt)[1]
+                returned_text = e.parent.text.split(txt)[1].split()
                 return " ".join(returned_text)
 
     def recommend(self) -> list:
