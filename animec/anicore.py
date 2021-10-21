@@ -5,11 +5,10 @@ import re
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 from urllib.error import HTTPError
-from urllib.parse import quote
 from .errors import NoResultFound
 
 class Anime:
-    """Retrieves anime info via `MyAnimeList <https://myanimelist.net/>`__.
+    """Retrieves anime info via `animesonglyrics <https://www.animesonglyrics.com/>`__.
 
     Parameters
     ----------
@@ -68,29 +67,24 @@ class Anime:
 
     def __init__(self, query: str):
 
-        if " " in query:
-            query = query.replace(" ", "%20")
-
-        to_open = "https://myanimelist.net/anime.php?q={}".format(query)
-
+        query = query.replace(" ", "%20")
+        
+        to_open = f"https://myanimelist.net/anime.php?q={query}"
+        encoded_url = to_open.encode('ascii','ignore')
+        
         try:
-            html_page = urlopen(to_open, timeout = 5)
-        except HTTPError as e:
-            raise NoResultFound(f"Can't find a matching result. HTTP Error: {e.code}")
+            html_page = urlopen(encoded_url.decode('utf-8'))
+        except HTTPError:
+            raise NoResultFound("Can't find a matching result.")
         
         soup = BeautifulSoup(html_page, 'html.parser')
 
         anime_div = soup.find("td", {'class': 'borderClass bgColor0'})
         url = anime_div.find("a", href = True)['href']
 
-        safe_url = quote(url, safe = ' <>="/:!')
-
-        try:
-            anime_page_open = urlopen(safe_url, timeout = 5)
-        except HTTPError as e:
-            raise NoResultFound(f"Can't find a matching result. HTTP Error: {e.code}")
-        
+        anime_page_open = urlopen(url)
         anime_page = BeautifulSoup(anime_page_open, 'html.parser')
+        self.__anime_page = anime_page
         
         name = anime_page.find("h1", {'class' : 'title-name h1_bold_none'})
 
@@ -98,16 +92,13 @@ class Anime:
         spaced_divs = anime_page.findAll('div', {'class' : 'spaceit'})
         dark_text = anime_page.findAll('span', {'class':'dark_text'})
         
-        self._dark = dark_text
-        self._page = anime_page
-
         title_english = self._divCh_(div = spaceit_divs, txt = "English:")
         title_jp = self._divCh_(div = spaceit_divs, txt = "Japanese:")
         alt_titles = self._divCh_(div = spaceit_divs, txt = "Synonyms:")
 
-        episodes = self._divCh_(div = spaced_divs, txt = "Episodes:")
-        aired = self._divCh_(div = spaced_divs, txt = "Aired:")
-        broadcast = self._divCh_(div = spaced_divs, txt = "Broadcast:")
+        episodes = self._divCh_(div = spaceit_divs, txt = "Episodes:")
+        aired = self._divCh_(div = spaceit_divs, txt = "Aired:")
+        broadcast = self._divCh_(div = spaceit_divs, txt = "Broadcast:")
         
         rating = self._parent_(element = dark_text, txt = "Rating:")
         popularity = self._parent_(element = dark_text, txt = "Popularity:")
@@ -115,17 +106,15 @@ class Anime:
         _type = self._parent_(element = dark_text, txt = "Type:")
         status = self._parent_(element = dark_text, txt = "Status:")
         producers = self._parent_(element = dark_text, txt = "Producers:").split(", ")
+        genres = self._parent_(element = dark_text, txt = "Genres:").split(", ")
 
-        ranked_text = str(anime_page.find('div', {'class':'spaceit po-r js-statistics-info di-ib'}))
+        ranked_text = str(anime_page.find('div', {'class' : 'spaceit_pad po-r js-statistics-info di-ib', 'data-id' : 'info2'}))
         ranked = re.search("#.*<", ranked_text)
         ranked = ranked.group().split("<")[0] if ranked else None
 
         description = anime_page.find('p', {'itemprop' : 'description'}).text
         poster = anime_page.find('img', {'itemprop' : 'image'})['data-src']
 
-        opening_themes = [theme.text for theme in anime_page.find('div', {'class':'theme-songs js-theme-songs opnening'}).findChildren('span', {'class':'theme-song'})]
-        ending_themes = [theme.text for theme in anime_page.find('div', {'class':'theme-songs js-theme-songs ending'}).findChildren('span', {'class':'theme-song'})]
-        
         self.url = url or None
         self.name = name.text or None
         
@@ -144,6 +133,7 @@ class Anime:
         self.type = _type or None
         self.status = status or None
         self.producers = producers
+        self.genres = genres or None
 
         self.description = description or None
         self.poster = poster or None
