@@ -15,5 +15,5 @@ from .errors import *
 __author__ = "DriftAsimov"
 __title__ = "animec"
 __copyright__ = "Copyright Drift Asimov 2021"
-__version__ = "0.3.3"
+__version__ = "0.3.4"
 __license__ = "MIT"
