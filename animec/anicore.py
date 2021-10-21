@@ -59,10 +59,6 @@ class Anime:
         Anime thumbnail
     teaser
         Anime teaser/promotion either official or unofficial
-    opening_themes: `list <https://docs.python.org/3/tutorial/datastructures.html>`__
-        Opening themes of the series
-    ending_themes: `list <https://docs.python.org/3/tutorial/datastructures.html>`__
-        Ending themes of the series
     """
 
     def __init__(self, query: str):
@@ -84,14 +80,13 @@ class Anime:
 
         anime_page_open = urlopen(url)
         anime_page = BeautifulSoup(anime_page_open, 'html.parser')
-        self.__anime_page = anime_page
         
         name = anime_page.find("h1", {'class' : 'title-name h1_bold_none'})
 
         spaceit_divs = anime_page.findAll('div', {'class' : 'spaceit_pad'})
-        spaced_divs = anime_page.findAll('div', {'class' : 'spaceit'})
         dark_text = anime_page.findAll('span', {'class':'dark_text'})
-        
+        self._dark = dark_text
+
         title_english = self._divCh_(div = spaceit_divs, txt = "English:")
         title_jp = self._divCh_(div = spaceit_divs, txt = "Japanese:")
         alt_titles = self._divCh_(div = spaceit_divs, txt = "Synonyms:")
@@ -106,7 +101,6 @@ class Anime:
         _type = self._parent_(element = dark_text, txt = "Type:")
         status = self._parent_(element = dark_text, txt = "Status:")
         producers = self._parent_(element = dark_text, txt = "Producers:").split(", ")
-        genres = self._parent_(element = dark_text, txt = "Genres:").split(", ")
 
         ranked_text = str(anime_page.find('div', {'class' : 'spaceit_pad po-r js-statistics-info di-ib', 'data-id' : 'info2'}))
         ranked = re.search("#.*<", ranked_text)
@@ -133,12 +127,9 @@ class Anime:
         self.type = _type or None
         self.status = status or None
         self.producers = producers
-        self.genres = genres or None
 
         self.description = description or None
         self.poster = poster or None
-        self.opening_themes = opening_themes or None
-        self.ending_themes = ending_themes or None
 
     def is_nsfw(self) -> bool:
         """
@@ -158,13 +149,12 @@ class Anime:
         for container in self._dark:
             if "Genres" in container.text:
                 parent = container.parent
+                links = parent.findChildren("a")
 
-        links = parent.findChildren("a")
-
-        for sub in links:
-            genres.append(sub.text)
-          
-        return genres or None
+                for sub in links:
+                    genres.append(sub.text)
+        
+        return genres
 
     @property
     def teaser(self):
