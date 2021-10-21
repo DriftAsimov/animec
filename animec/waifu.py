@@ -6,7 +6,7 @@ from urllib.request import urlopen, Request
 from urllib.error import HTTPError
 from random import choice
 
-__all__ = ('Waifu')
+__all__ = ['Waifu']
 
 class Waifu:
     """Represents the waifu class. Fetches image urls from `waifu.pics <https://waifu.pics/>`__."""
