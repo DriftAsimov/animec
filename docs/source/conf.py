@@ -14,16 +14,18 @@
 import os
 import sys
 
-sys.path.insert(0, os.path.abspath('../../'))
+sys.path.insert(0, os.path.abspath("../../"))
 
 # -- Project information -----------------------------------------------------
 
-project = 'animec'
-copyright = '2021, Drift Asimov'
-author = 'Drift Asimov'
+project = "animec"
+copyright = "2021, Drift Asimov"
+author = "Drift Asimov"
 
 # The full version, including alpha/beta/rc tags
-setup_file = open("../../setup.py").read().split('version')[1].split("'")[1].split("'")[0]
+setup_file = (
+    open("../../setup.py").read().split("version")[1].split("'")[1].split("'")[0]
+)
 release = str(setup_file)
 
 # -- General configuration ---------------------------------------------------
@@ -36,17 +38,17 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
     "sphinx.ext.intersphinx",
-    "sphinx.ext.extlinks"
+    "sphinx.ext.extlinks",
 ]
 
-autodoc_member_order = 'bysource'
+autodoc_member_order = "bysource"
 
 intersphinx_mapping = {
-    'py': ('https://docs.python.org/3', None),
+    "py": ("https://docs.python.org/3", None),
 }
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+templates_path = ["_templates"]
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -54,22 +56,22 @@ templates_path = ['_templates']
 exclude_patterns = []
 
 # The master toctree document.
-master_doc = 'index'
+master_doc = "index"
 
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'furo'
+html_theme = "furo"
 
 html_context = {
-    'discord_invite': 'https://discord.gg/x3qAZV3',
-    'issues': 'https://github.com/DriftAsimov/animec/issues',
+    "discord_invite": "https://discord.gg/x3qAZV3",
+    "issues": "https://github.com/DriftAsimov/animec/issues",
 }
 
-html_favicon = '../assets/animec.png'
-html_logo = '../assets/animec.png'
+html_favicon = "../assets/animec.png"
+html_logo = "../assets/animec.png"
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,

@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
-'''
+"""
 Animec
 ~~~~~~~~~~~~~~~~~~~
 A module to get data about anime characters, news, info, lyrics and more.
-'''
+"""
 
 from .sagasu import *
 from .aninews import *

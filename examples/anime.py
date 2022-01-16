@@ -1,13 +1,15 @@
 from animec import Anime, NoResultFound
 
+
 def get_anime(name: str):
-    
+
     try:
         anime = Anime(name)
     except NoResultFound:
         return None
-    
+
     return anime
+
 
 def body(base: Anime):
 
@@ -37,6 +39,7 @@ def body(base: Anime):
 
     return display_body
 
+
 def prompt():
 
     inp = input("\nPlease input the name of the anime you wish to search for: ")
@@ -46,5 +49,6 @@ def prompt():
         return body(anime)
     else:
         return "\nIt looks like I couldn't find the anime you were looking for."
+
 
 print(prompt())

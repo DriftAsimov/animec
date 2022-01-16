@@ -6,7 +6,8 @@ from urllib.request import urlopen, Request
 from urllib.error import HTTPError
 from random import choice
 
-__all__ = ['Waifu']
+__all__ = ["Waifu"]
+
 
 class Waifu:
     """Represents the waifu class. Fetches image urls from `waifu.pics <https://waifu.pics/>`__."""
@@ -16,14 +17,16 @@ class Waifu:
     @classmethod
     def __image__(cls, url: str) -> str:
 
-        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.3'}
-        req = Request(url = url, headers = headers)
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.3"
+        }
+        req = Request(url=url, headers=headers)
 
         try:
             page = urlopen(req)
         except HTTPError as e:
             raise NoResultFound(f"HTTP Error: {e.code}")
-        
+
         res = json.loads(page.read())
 
         return res["url"]
@@ -32,9 +35,7 @@ class Waifu:
     def random(cls) -> str:
         """Returns waifus from random category"""
 
-        select = choice(
-            ['waifu', 'shinobu', 'megumin', 'neko']
-        )
+        select = choice(["waifu", "shinobu", "megumin", "neko"])
         return cls.__image__(cls.base + select)
 
     @classmethod
@@ -42,9 +43,35 @@ class Waifu:
         """Returns a random anime gif"""
 
         select = choice(
-            ['bully', 'cuddle', 'cry', 'hug', 'awoo', 'kiss', 'lick', 'pat', 'smug', 
-            'bonk', 'yeet', 'blush', 'smile', 'wave', 'highfive', 'handhold', 'nom',
-            'bite', 'glomp', 'slap', 'kill', 'kick', 'happy', 'wink', 'poke', 'dance', 'cringe']
+            [
+                "bully",
+                "cuddle",
+                "cry",
+                "hug",
+                "awoo",
+                "kiss",
+                "lick",
+                "pat",
+                "smug",
+                "bonk",
+                "yeet",
+                "blush",
+                "smile",
+                "wave",
+                "highfive",
+                "handhold",
+                "nom",
+                "bite",
+                "glomp",
+                "slap",
+                "kill",
+                "kick",
+                "happy",
+                "wink",
+                "poke",
+                "dance",
+                "cringe",
+            ]
         )
         return cls.__image__(cls.base + select)
 

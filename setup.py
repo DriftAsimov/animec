@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '0.3.5'
+version = "0.3.5"
 
 with open("requirements.txt", "r") as f:
     requirements = f.read().split("\n")
@@ -19,24 +19,24 @@ classifiers = [
 ]
 
 setup(
-    name = "animec",
-    version = version,
-    description = "A module to get data about anime characters, news, info, lyrics and more.",
-    long_description = long_description,
-    long_description_content_type = "text/markdown",
-    url = "https://github.com/DriftAsimov/animec",
-    project_urls = {
+    name="animec",
+    version=version,
+    description="A module to get data about anime characters, news, info, lyrics and more.",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+    url="https://github.com/DriftAsimov/animec",
+    project_urls={
         "Documentation": "https://animec.readthedocs.io/en/latest/",
         "Issue tracker": "https://github.com/DriftAsimov/animec/issues",
         "Github": "https://github.com/DriftAsimov/animec",
     },
-    author = "DriftAsimov",
-    author_email = "driftasimov@gmail.com",
-    license = "MIT",
-    classifiers = classifiers,
-    keywords = [
+    author="DriftAsimov",
+    author_email="driftasimov@gmail.com",
+    license="MIT",
+    classifiers=classifiers,
+    keywords=[
         "animecharacter anime character myanimelist news animenews animeinfo music animelyrics lyrics"
     ],
-    packages = find_packages(),
-    install_requires = requirements,
+    packages=find_packages(),
+    install_requires=requirements,
 )

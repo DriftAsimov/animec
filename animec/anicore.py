@@ -7,6 +7,7 @@ from urllib.request import urlopen
 from urllib.error import HTTPError
 from .errors import NoResultFound
 
+
 class Anime:
     """Retrieves anime info via `animesonglyrics <https://www.animesonglyrics.com/>`__.
 
@@ -19,16 +20,16 @@ class Anime:
     ----------
     url
         Returns the url of the anime main page
-    name 
+    name
         Returns the main name of the anime
-    
+
     title_english
         Returns the english title
     title_jp
         Returns the japanese title
     alt_titles
         Returns alternative titles
-    
+
     episodes
         The episode count of the anime
     aired
@@ -52,7 +53,7 @@ class Anime:
         List of studios which contributed to the production of the series
     genres: `list <https://docs.python.org/3/tutorial/datastructures.html>`__
         List of anime genres or kind
-    
+
     description
         Short description about the anime
     poster
@@ -64,54 +65,62 @@ class Anime:
     def __init__(self, query: str):
 
         query = query.replace(" ", "%20")
-        
+
         to_open = f"https://myanimelist.net/anime.php?q={query}"
-        encoded_url = to_open.encode('ascii','ignore')
-        
+        encoded_url = to_open.encode("ascii", "ignore")
+
         try:
-            html_page = urlopen(encoded_url.decode('utf-8'))
+            html_page = urlopen(encoded_url.decode("utf-8"))
         except HTTPError:
             raise NoResultFound("Can't find a matching result.")
-        
-        soup = BeautifulSoup(html_page, 'html.parser')
 
-        anime_div = soup.find("td", {'class': 'borderClass bgColor0'})
-        url = anime_div.find("a", href = True)['href']
+        soup = BeautifulSoup(html_page, "html.parser")
+
+        anime_div = soup.find("td", {"class": "borderClass bgColor0"})
+        url = anime_div.find("a", href=True)["href"]
 
         anime_page_open = urlopen(url)
-        anime_page = BeautifulSoup(anime_page_open, 'html.parser')
-        
-        name = anime_page.find("h1", {'class' : 'title-name h1_bold_none'})
+        anime_page = BeautifulSoup(anime_page_open, "html.parser")
 
-        spaceit_divs = anime_page.findAll('div', {'class' : 'spaceit_pad'})
-        dark_text = anime_page.findAll('span', {'class':'dark_text'})
+        name = anime_page.find("h1", {"class": "title-name h1_bold_none"})
+
+        spaceit_divs = anime_page.findAll("div", {"class": "spaceit_pad"})
+        dark_text = anime_page.findAll("span", {"class": "dark_text"})
         self._dark = dark_text
 
-        title_english = self._divCh_(div = spaceit_divs, txt = "English:")
-        title_jp = self._divCh_(div = spaceit_divs, txt = "Japanese:")
-        alt_titles = self._divCh_(div = spaceit_divs, txt = "Synonyms:")
+        title_english = self._divCh_(div=spaceit_divs, txt="English:")
+        title_jp = self._divCh_(div=spaceit_divs, txt="Japanese:")
+        alt_titles = self._divCh_(div=spaceit_divs, txt="Synonyms:")
 
-        episodes = self._divCh_(div = spaceit_divs, txt = "Episodes:")
-        aired = self._divCh_(div = spaceit_divs, txt = "Aired:")
-        broadcast = self._divCh_(div = spaceit_divs, txt = "Broadcast:")
-        
-        rating = self._parent_(element = dark_text, txt = "Rating:")
-        popularity = self._parent_(element = dark_text, txt = "Popularity:")
-        favorites = self._parent_(element = dark_text, txt = "Favorites:")
-        _type = self._parent_(element = dark_text, txt = "Type:")
-        status = self._parent_(element = dark_text, txt = "Status:")
-        producers = self._parent_(element = dark_text, txt = "Producers:").split(", ")
+        episodes = self._divCh_(div=spaceit_divs, txt="Episodes:")
+        aired = self._divCh_(div=spaceit_divs, txt="Aired:")
+        broadcast = self._divCh_(div=spaceit_divs, txt="Broadcast:")
 
-        ranked_text = str(anime_page.find('div', {'class' : 'spaceit_pad po-r js-statistics-info di-ib', 'data-id' : 'info2'}))
+        rating = self._parent_(element=dark_text, txt="Rating:")
+        popularity = self._parent_(element=dark_text, txt="Popularity:")
+        favorites = self._parent_(element=dark_text, txt="Favorites:")
+        _type = self._parent_(element=dark_text, txt="Type:")
+        status = self._parent_(element=dark_text, txt="Status:")
+        producers = self._parent_(element=dark_text, txt="Producers:").split(", ")
+
+        ranked_text = str(
+            anime_page.find(
+                "div",
+                {
+                    "class": "spaceit_pad po-r js-statistics-info di-ib",
+                    "data-id": "info2",
+                },
+            )
+        )
         ranked = re.search("#.*<", ranked_text)
         ranked = ranked.group().split("<")[0] if ranked else None
 
-        description = anime_page.find('p', {'itemprop' : 'description'}).text
-        poster = anime_page.find('img', {'itemprop' : 'image'})['data-src']
+        description = anime_page.find("p", {"itemprop": "description"}).text
+        poster = anime_page.find("img", {"itemprop": "image"})["data-src"]
 
         self.url = url or None
         self.name = name.text or None
-        
+
         self.title_english = title_english or None
         self.title_jp = title_jp or None
         self.alt_titles = alt_titles or None
@@ -153,17 +162,19 @@ class Anime:
 
                 for sub in links:
                     genres.append(sub.text)
-        
+
         return genres
 
     @property
     def teaser(self):
 
-        url = urlopen(self.url + "/video", timeout = 5)
-        soup = BeautifulSoup(url, 'html.parser')
+        url = urlopen(self.url + "/video", timeout=5)
+        soup = BeautifulSoup(url, "html.parser")
 
-        div = soup.find('div', {'class' : 'video-list-outer po-r pv'})
-        teaser_link = div.findChildren('a', {'class' : "iframe js-fancybox-video video-list di-ib po-r"})[0]['href']
+        div = soup.find("div", {"class": "video-list-outer po-r pv"})
+        teaser_link = div.findChildren(
+            "a", {"class": "iframe js-fancybox-video video-list di-ib po-r"}
+        )[0]["href"]
 
         if teaser_link and "youtube" in teaser_link:
             _id = teaser_link.split("embed/")[1].split("?")[0]
@@ -192,15 +203,15 @@ class Anime:
         list
             Returns suitable recommendations based on the anime referred while declaring the class
         """
-        
-        anime_page = urlopen(self.url + "/userrecs")
-        soup = BeautifulSoup(anime_page, 'html.parser')
 
-        headers = soup.findAll("strong", limit = 15)
+        anime_page = urlopen(self.url + "/userrecs")
+        soup = BeautifulSoup(anime_page, "html.parser")
+
+        headers = soup.findAll("strong", limit=15)
 
         recommendations = [i.get_text() for i in headers]
 
-        ri = [i for i in recommendations if not i.isdigit()]  
+        ri = [i for i in recommendations if not i.isdigit()]
         ri.pop(0)
 
         return ri[:5]
