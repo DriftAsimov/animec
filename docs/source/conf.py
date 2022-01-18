@@ -24,7 +24,7 @@ author = "Drift Asimov"
 
 # The full version, including alpha/beta/rc tags
 setup_file = (
-    open("../../setup.py").read().split("version")[1].split("'")[1].split("'")[0]
+    open("../../setup.py").read().split("version")[1].split('"')[1].split('"')[0]
 )
 release = str(setup_file)
 
