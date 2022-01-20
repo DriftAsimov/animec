@@ -69,6 +69,11 @@ html_context = {
     "issues": "https://github.com/DriftAsimov/animec/issues",
 }
 
+html_theme_options = {
+    "sidebar_hide_name": True,
+    "navigation_with_keys": True
+}
+
 html_favicon = "../assets/animec.png"
 html_logo = "../assets/animec.png"
 
