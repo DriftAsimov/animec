@@ -191,23 +191,17 @@ def kao(count: int = 1) -> list:
         List comprising of random kaomojis
     """
 
-    URL = "http://kaomoji.ru/en/"
-
-    html_page = urlopen(URL)
+    html_page = urlopen("http://kaomoji.ru/en/")
     soup = BeautifulSoup(html_page, "html.parser")
 
-    tables = soup.findAll("table", {"class": "table_kaomoji"})
-
     kaomojis = []
-
-    for table in tables:
-
+    for table in soup.findAll("table", {"class": "table_kaomoji"}):
         kaomoji = table.findChildren("td")
-
         for i in kaomoji:
-
-            kaomojis.append(str(i.text))
+            if not "style" in i.keys():
+                kaomojis.append(str(i.text))
+            else:
+                pass
 
     kao = random.sample(kaomojis, count)
-
     return kao

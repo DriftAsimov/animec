@@ -9,7 +9,7 @@ from .errors import NoResultFound
 
 
 class Anime:
-    """Retrieves anime info via `animesonglyrics <https://www.animesonglyrics.com/>`__.
+    """Retrieves anime info via `myanimelist <https://myanimelist.net/>`__.
 
     Parameters
     ----------
@@ -59,7 +59,7 @@ class Anime:
     poster
         Anime thumbnail
     teaser
-        Anime teaser/promotion either official or unofficial
+        Official anime teaser/promotion
     """
 
     def __init__(self, query: str):
@@ -84,17 +84,18 @@ class Anime:
 
         name = anime_page.find("h1", {"class": "title-name h1_bold_none"})
 
-        spaceit_divs = anime_page.findAll("div", {"class": "spaceit_pad"})
+        self.__spaceit_divs = anime_page.findAll("div", {"class": "spaceit_pad"})
         dark_text = anime_page.findAll("span", {"class": "dark_text"})
         self._dark = dark_text
 
-        title_english = self._divCh_(div=spaceit_divs, txt="English:")
-        title_jp = self._divCh_(div=spaceit_divs, txt="Japanese:")
-        alt_titles = self._divCh_(div=spaceit_divs, txt="Synonyms:")
+        title_english = self._divCh_("English:")
+        title_jp = self._divCh_("Japanese:")
+        alt_titles = self._divCh_("Synonyms:")
 
-        episodes = self._divCh_(div=spaceit_divs, txt="Episodes:")
-        aired = self._divCh_(div=spaceit_divs, txt="Aired:")
-        broadcast = self._divCh_(div=spaceit_divs, txt="Broadcast:")
+        episodes = self._divCh_("Episodes:")
+        premiered = self._divCh_("Premiered:")
+        aired = self._divCh_("Aired:")
+        broadcast = self._divCh_("Broadcast:")
 
         rating = self._parent_(element=dark_text, txt="Rating:")
         popularity = self._parent_(element=dark_text, txt="Popularity:")
@@ -126,6 +127,7 @@ class Anime:
         self.alt_titles = alt_titles or None
 
         self.episodes = episodes or None
+        self.premiered = premiered or None
         self.aired = aired or None
         self.broadcast = broadcast or None
         self.rating = rating or None
@@ -182,9 +184,9 @@ class Anime:
 
         return teaser_link or None
 
-    def _divCh_(self, div: list, txt: str):
+    def _divCh_(self, txt: str):
 
-        for container in div:
+        for container in self.__spaceit_divs:
             if txt in container.text:
                 div_text = container.text.split(txt)[1].split()
                 return " ".join(div_text)
