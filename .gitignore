@@ -1,4 +1,13 @@
+# Cache
+**/__pycache__
+
+# Distribution
 build
 dist
-animec.egg-info
+*.egg-info
+
+# Editor config
 .vscode
+
+# Documentation
+docs/_build
