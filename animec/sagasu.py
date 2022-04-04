@@ -198,7 +198,7 @@ def kao(count: int = 1) -> list:
     for table in soup.findAll("table", {"class": "table_kaomoji"}):
         kaomoji = table.findChildren("td")
         for i in kaomoji:
-            if not "style" in i.keys():
+            if not i.has_attr("style"):
                 kaomojis.append(str(i.text))
             else:
                 pass
