@@ -158,7 +158,7 @@ class Anime:
         genres = []
 
         for container in self._dark:
-            if "Genres" in container.text:
+            if "Genres" in container.text or "Genre" in container.text:
                 parent = container.parent
                 links = parent.findChildren("a")
 
