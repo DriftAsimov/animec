@@ -4,6 +4,7 @@ import re
 
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
+from urllib.parse import urlsplit, urlunsplit, quote
 from urllib.error import HTTPError
 from .errors import NoResultFound
 
@@ -78,6 +79,14 @@ class Anime:
 
         anime_div = soup.find("td", {"class": "borderClass bgColor0"})
         url = anime_div.find("a", href=True)["href"]
+
+        # quote the non-ascii characters which may possibly exist in the anime name
+        # split the url to update the path
+        url_split = list(urlsplit(url))
+        # quote the urlpath
+        url_split[2] = quote(url_split[2])
+        # build the url again
+        url = urlunsplit(url_split)
 
         anime_page_open = urlopen(url)
         anime_page = BeautifulSoup(anime_page_open, "html.parser")
