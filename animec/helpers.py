@@ -2,6 +2,7 @@
 
 from bs4 import BeautifulSoup
 from urllib.request import urlopen, Request
+from urllib.parse import urlsplit, urlunsplit, quote
 
 
 def search(term, num_results=10, lang="en"):
@@ -34,3 +35,16 @@ def search(term, num_results=10, lang="en"):
 
     html = fetch_results(term, num_results, lang)
     return list(parse_results(html))
+
+
+def escape_url(url: str) -> str:
+    """
+    Escape the non-ascii characters which may be present in the URL.
+    """
+    url_splitted = list(urlsplit(url))
+
+    # quote entire URL except its scheme
+    for i in range(1, len(url_splitted)):
+        url_splitted[i] = quote(url_splitted[i])
+
+    return urlunsplit(url_splitted)
