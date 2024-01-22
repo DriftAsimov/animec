@@ -17,7 +17,7 @@ See the Docs for a complete documentation: https://animec.readthedocs.io/en/late
 
 To install the module:
 ```python
-pip install animec
+pip install git+https://github.com/shravanasati/animec.git
 ```
 
 To import the module:

@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 from urllib.request import urlopen
 from urllib.error import HTTPError
 from .errors import NoResultFound
+from .helpers import escape_url
 
 
 class Anime:
@@ -53,6 +54,8 @@ class Anime:
         List of studios which contributed to the production of the series
     genres: `list <https://docs.python.org/3/tutorial/datastructures.html>`__
         List of anime genres or kind
+    themes: `list <https://docs.python.org/3/tutorial/datastructures.html>`__
+        List of anime themes
 
     description
         Short description about the anime
@@ -63,8 +66,7 @@ class Anime:
     """
 
     def __init__(self, query: str):
-
-        query = query.replace(" ", "%20")
+        query = escape_url(query)
 
         to_open = f"https://myanimelist.net/anime.php?q={query}"
         encoded_url = to_open.encode("ascii", "ignore")
@@ -78,6 +80,9 @@ class Anime:
 
         anime_div = soup.find("td", {"class": "borderClass bgColor0"})
         url = anime_div.find("a", href=True)["href"]
+
+        # quote the non-ascii characters which may possibly exist in the anime name
+        url = escape_url(url)
 
         anime_page_open = urlopen(url)
         anime_page = BeautifulSoup(anime_page_open, "html.parser")
@@ -154,11 +159,10 @@ class Anime:
 
     @property
     def genres(self):
-
         genres = []
 
         for container in self._dark:
-            if "Genres" in container.text:
+            if "Genres" in container.text or "Genre" in container.text:
                 parent = container.parent
                 links = parent.findChildren("a")
 
@@ -168,8 +172,20 @@ class Anime:
         return genres
 
     @property
-    def teaser(self):
+    def themes(self):
+        themes_ = []
+        for container in self._dark:
+            if "Themes" in container.text or "Theme" in container.text:
+                parent = container.parent
+                links = parent.findChildren("a")
 
+                for sub in links:
+                    themes_.append(sub.text)
+
+        return themes_
+
+    @property
+    def teaser(self):
         url = urlopen(self.url + "/video", timeout=5)
         soup = BeautifulSoup(url, "html.parser")
 
@@ -185,14 +201,12 @@ class Anime:
         return teaser_link or None
 
     def _divCh_(self, txt: str):
-
         for container in self.__spaceit_divs:
             if txt in container.text:
                 div_text = container.text.split(txt)[1].split()
                 return " ".join(div_text)
 
     def _parent_(self, element: list, txt: str):
-
         for e in element:
             if txt in e.text:
                 returned_text = e.parent.text.split(txt)[1].split()
