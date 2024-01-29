@@ -1,7 +1,9 @@
+<blockquote><h3> 🛑 Due to several changes in MAL's structure, this repo is being archived and won't be further maintained. Thanks for everyone's support! </h3></blockquote>
+
 <p align = "center"><img width="248" height="248" src="https://i.imgur.com/IyUybvv.png"></p>
 
 <p align = "center"><a href="https://github.com/DriftAsimov/animec/stargazers"><img src = "https://img.shields.io/github/stars/driftasimov/animec?colorA=1e1e28&colorB=c9cbff&style=for-the-badge&logo=starship%20style=for-the-badge"></a>
-<a href = "https://discord.gg/x3qAZV3" target = "_blank"><img src="https://img.shields.io/discord/907385605422448742?style=for-the-badge&logo=discord&color=DDB6F2&logoColor=D9E0EE&labelColor=302D41"></a></p>
+</p>
 
 # Animec
 
